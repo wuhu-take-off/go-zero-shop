@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package shop;
+
+option go_package = "./shop";
+
+message UserLoginReq{
+  //登录邮箱
+  string email = 1;
+  //邮箱验证码
+  string email_auth = 2;
+}
+message UserLoginResp{
+  bool OK = 1;
+}
+
+service UserServe{
+  rpc UserLogin (UserLoginReq) returns (UserLoginResp);
+}
+
+//规格
+message SpecificationResp{
+  //规格ID
+  int32 specification_id = 1;
+  //尺寸
+  string size = 2;
+  //上架库存
+  int32 display_inventory = 3;
+  //实时库存
+  int32 real_inventory = 4;
+  //积分
+  int32 score = 5;
+}
+message SpecificationReq{
+  //尺寸
+  string size = 1;
+  //上架库存
+  int32 display_inventory = 2;
+  //实时库存
+  int32 real_inventory = 3;
+  //积分
+  int32 score = 4;
+}
+
+//获取商品列表
+message GoodsListReq{
+  //用户ID
+  int32 user_id = 1;
+  //0：下架  1：上架
+  optional int32 status = 2;
+  //商品类型ID
+  optional int32 goods_type_id = 3;
+  //商户ID
+  optional int32 merchant_id = 4;
+  //商品名称
+  optional string goods_name = 5;
+  //商品ID
+  optional int32 goods_id = 6;
+  //页码
+  int32 page = 7;
+  //条数
+  int32 limit = 8;
+}
+
+//商品列表响应
+message GoodsList{
+  string merchant_name = 1;
+  int32 goods_id = 2;
+  string goods_name = 3;
+  int32 goods_type_id = 4;
+  int32 status = 5;
+  string describe = 6;
+  //规格列表
+  repeated SpecificationResp specification_list = 7;
+}
+message GoodsListResp{
+  repeated GoodsList list = 1;
+  int32  count = 2;
+  int32 limit = 3;
+  int32 number = 4;
+  int32 page = 5;
+}
+
+
+
+//添加商品
+message GoodsAddReq{
+  //用户ID
+  int32 user_id =1 ;
+  //商品名称
+  string goods_name =2;
+  //商品类型
+  int32 goods_type_id = 3;
+  //0：下架 1：上架
+  int32 status =4;
+  //商品描述
+  optional string describe =5;
+  
+  //规格列表
+  repeated SpecificationReq specification_list = 6;
+}
+message GoodsAddResp{
+  bool OK = 1;
+}
+
+
+//更新商品信息
+message GoodsUpdateReq{
+  int32 user_id = 1;
+  int32 goods_id = 2;
+  optional string goods_name = 3;
+  optional int32 goods_type_id = 4;
+  int32 status = 5;
+  optional string describe = 6;
+  repeated SpecificationResp specification_list = 7;
+}
+message GoodsUpdateResp{
+  bool OK = 1;
+}
+
+//删除商品
+message GoodsDelReq{
+  int32 goods_id = 1;
+}
+message GoodsDelResp{
+  bool OK = 1;
+}
+
+service GoodsServe{
+  //获取商品列表
+  rpc GoodsList (GoodsListReq) returns (GoodsListResp);
+  //添加商品
+  rpc GoodsAdd (GoodsAddReq) returns (GoodsAddResp);
+  //更新商品
+  rpc GoodsUpdate(GoodsUpdateReq) returns (GoodsUpdateResp);
+  //删除山炮
+  rpc GoodsDel(GoodsDelReq) returns (GoodsDelResp);
+}
+
+
+message SendEmailAuthReq{
+  string email = 1;
+}
+message SendEmailAuthResp{
+  int32 OK = 1;
+}
+
+
+service FunctionServe{
+  rpc SendEmailAuth (SendEmailAuthReq) returns (SendEmailAuthResp);
+}
+
+
+message TaskReq{
+  int32 user_id = 1;
+  optional int32 status = 2;
+  optional int32 task_type_id = 3;
+  optional string task_name = 4;
+  optional int32 task_id = 5;
+
+}
+// goctl rpc protoc shop.proto --go_out=. --go-grpc_out=. --zrpc_out=. -m
