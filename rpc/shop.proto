@@ -95,9 +95,9 @@ message GoodsAddReq{
   int32 status =4;
   //商品描述
   optional string describe =5;
-  
+  repeated string img = 6;
   //规格列表
-  repeated SpecificationReq specification_list = 6;
+  repeated SpecificationReq specification_list = 7;
 }
 message GoodsAddResp{
   bool OK = 1;
@@ -157,6 +157,5 @@ message TaskReq{
   optional int32 task_type_id = 3;
   optional string task_name = 4;
   optional int32 task_id = 5;
-
 }
 // goctl rpc protoc shop.proto --go_out=. --go-grpc_out=. --zrpc_out=. -m

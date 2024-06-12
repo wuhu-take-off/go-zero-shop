@@ -60,7 +60,7 @@ func UpdateFieldMap(in any, change map[string]string) ([]string, []interface{}) 
 		column := strings.Split(typ.Field(i).Tag.Get("json"), ",")[0]
 		c, ok := change[column]
 
-		if fieldValue.Kind() == reflect.Ptr && !fieldValue.IsNil() || ok {
+		if fieldValue.Kind() == reflect.Ptr && !fieldValue.IsNil() || fieldValue.Kind() != reflect.Ptr && ok {
 			val := fieldValue
 			if fieldValue.Kind() == reflect.Ptr {
 				val = fieldValue.Elem()

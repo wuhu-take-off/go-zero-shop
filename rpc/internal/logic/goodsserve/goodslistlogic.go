@@ -9,6 +9,7 @@ import (
 	"context"
 	"errors"
 	"github.com/zeromicro/go-zero/core/logx"
+	"strings"
 )
 
 type GoodsListLogic struct {
@@ -33,12 +34,12 @@ func (l *GoodsListLogic) GoodsList(in *shop.GoodsListReq) (*shop.GoodsListResp, 
 	if role == 0 {
 		return nil, errors.New("用户不存在")
 	}
-	sql, _ := raw_field.UpdateFieldMap(in, user_model.UserGoodsSqlFileMap)
+	sql, val := raw_field.UpdateFieldMap(in, user_model.UserGoodsSqlFileMap)
 	for i := 0; i < len(sql); i++ {
 		sql[i] = sql[i] + " = ? "
 	}
 	//获取用户的商户以及商户对应的商品信息
-	count, goods := userModel.FindUsersGoods(in.UserId, in.Page, in.Limit, "")
+	count, goods := userModel.FindUsersGoods(in.UserId, in.Page, in.Limit, strings.Join(sql, " AND "), val...)
 
 	goodsIdList := make([]interface{}, 0, len(goods))
 	//将对应的规格信息放到对应的商品中同时加载goodsId列表

@@ -118,7 +118,7 @@ func (m *defaultUserInfosModel) FindUsersGoods(userId, page, limit int32, sql st
 	case 1: //管理员
 		return m.CountUserGoods(), m.admiGoods(page, limit, sql, values...)
 	case 2: //商户
-		return m.CountUserGoods(), m.userGoods(userId, page, limit, sql, values...)
+		return m.CountUserGoods(userId), m.userGoods(userId, page, limit, sql, values...)
 	default:
 		return 0, nil
 	}
