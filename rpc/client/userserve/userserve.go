@@ -26,6 +26,7 @@ type (
 	SendEmailAuthResp = shop.SendEmailAuthResp
 	SpecificationReq  = shop.SpecificationReq
 	SpecificationResp = shop.SpecificationResp
+	TaskReq           = shop.TaskReq
 	UserLoginReq      = shop.UserLoginReq
 	UserLoginResp     = shop.UserLoginResp
 

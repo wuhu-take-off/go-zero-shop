@@ -95,7 +95,7 @@ message GoodsAddReq{
   int32 status =4;
   //商品描述
   optional string describe =5;
-  repeated string img = 6;
+  string img = 6;
   //规格列表
   repeated SpecificationReq specification_list = 7;
 }

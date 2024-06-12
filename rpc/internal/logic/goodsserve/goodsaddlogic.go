@@ -51,6 +51,7 @@ func (l *GoodsAddLogic) GoodsAdd(in *shop.GoodsAddReq) (*shop.GoodsAddResp, erro
 			Name:        in.GoodsName,
 			GoodsTypeId: in.GoodsTypeId,
 			Status:      in.Status,
+			Img:         in.Img,
 			Description: func() string {
 				if in.Describe == nil {
 					return ""
@@ -83,5 +84,7 @@ func (l *GoodsAddLogic) GoodsAdd(in *shop.GoodsAddReq) (*shop.GoodsAddResp, erro
 		return nil, errors.New("添加失败")
 	}
 
-	return &shop.GoodsAddResp{}, nil
+	return &shop.GoodsAddResp{
+		OK: true,
+	}, nil
 }
