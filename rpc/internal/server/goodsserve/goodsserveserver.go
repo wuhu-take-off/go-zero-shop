@@ -40,7 +40,7 @@ func (s *GoodsServeServer) GoodsUpdate(ctx context.Context, in *shop.GoodsUpdate
 	return l.GoodsUpdate(in)
 }
 
-// 删除山炮
+// 删除商品
 func (s *GoodsServeServer) GoodsDel(ctx context.Context, in *shop.GoodsDelReq) (*shop.GoodsDelResp, error) {
 	l := goodsservelogic.NewGoodsDelLogic(ctx, s.svcCtx)
 	return l.GoodsDel(in)

@@ -53,10 +53,10 @@ func (l *GoodsAddLogic) GoodsAdd(in *shop.GoodsAddReq) (*shop.GoodsAddResp, erro
 			Status:      in.Status,
 			Img:         in.Img,
 			Description: func() string {
-				if in.Describe == nil {
+				if in.Description == nil {
 					return ""
 				}
-				return *in.Describe
+				return *in.Description
 			}(),
 		}
 		if err := goodsModel.CreateGoodsInfos(goodsInfo); err != nil {

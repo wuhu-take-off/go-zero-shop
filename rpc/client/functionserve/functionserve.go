@@ -13,25 +13,52 @@ import (
 )
 
 type (
-	GoodsAddReq       = shop.GoodsAddReq
-	GoodsAddResp      = shop.GoodsAddResp
-	GoodsDelReq       = shop.GoodsDelReq
-	GoodsDelResp      = shop.GoodsDelResp
-	GoodsList         = shop.GoodsList
-	GoodsListReq      = shop.GoodsListReq
-	GoodsListResp     = shop.GoodsListResp
-	GoodsUpdateReq    = shop.GoodsUpdateReq
-	GoodsUpdateResp   = shop.GoodsUpdateResp
-	SendEmailAuthReq  = shop.SendEmailAuthReq
-	SendEmailAuthResp = shop.SendEmailAuthResp
-	SpecificationReq  = shop.SpecificationReq
-	SpecificationResp = shop.SpecificationResp
-	TaskReq           = shop.TaskReq
-	UserLoginReq      = shop.UserLoginReq
-	UserLoginResp     = shop.UserLoginResp
+	AddMerchantReq          = shop.AddMerchantReq
+	AddMerchantResp         = shop.AddMerchantResp
+	DelMerchantReq          = shop.DelMerchantReq
+	DelMerchantResp         = shop.DelMerchantResp
+	GoodsAddReq             = shop.GoodsAddReq
+	GoodsAddResp            = shop.GoodsAddResp
+	GoodsDelReq             = shop.GoodsDelReq
+	GoodsDelResp            = shop.GoodsDelResp
+	GoodsList               = shop.GoodsList
+	GoodsListReq            = shop.GoodsListReq
+	GoodsListResp           = shop.GoodsListResp
+	GoodsUpdateReq          = shop.GoodsUpdateReq
+	GoodsUpdateResp         = shop.GoodsUpdateResp
+	LoadImgReq              = shop.LoadImgReq
+	LoadImgResp             = shop.LoadImgResp
+	MerchantList            = shop.MerchantList
+	MerchantListReq         = shop.MerchantListReq
+	MerchantListResp        = shop.MerchantListResp
+	OrderList               = shop.OrderList
+	OrderListReq            = shop.OrderListReq
+	OrderListResp           = shop.OrderListResp
+	SendEmailAuthReq        = shop.SendEmailAuthReq
+	SendEmailAuthResp       = shop.SendEmailAuthResp
+	SpecificationReq        = shop.SpecificationReq
+	SpecificationResp       = shop.SpecificationResp
+	TaskList                = shop.TaskList
+	TaskListReq             = shop.TaskListReq
+	TaskListResp            = shop.TaskListResp
+	UpdateCourierNumberReq  = shop.UpdateCourierNumberReq
+	UpdateCourierNumberResp = shop.UpdateCourierNumberResp
+	UpdateMerchantReq       = shop.UpdateMerchantReq
+	UpdateMerchantResp      = shop.UpdateMerchantResp
+	UpdateTaskReq           = shop.UpdateTaskReq
+	UpdateTaskResp          = shop.UpdateTaskResp
+	UploadImgReq            = shop.UploadImgReq
+	UploadImgResp           = shop.UploadImgResp
+	UserLoginReq            = shop.UserLoginReq
+	UserLoginResp           = shop.UserLoginResp
 
 	FunctionServe interface {
+		// 发送邮箱验证码
 		SendEmailAuth(ctx context.Context, in *SendEmailAuthReq, opts ...grpc.CallOption) (*SendEmailAuthResp, error)
+		// 上传如图片
+		UploadImg(ctx context.Context, in *UploadImgReq, opts ...grpc.CallOption) (*UploadImgResp, error)
+		// 加载图片
+		LoadImg(ctx context.Context, in *LoadImgReq, opts ...grpc.CallOption) (*LoadImgResp, error)
 	}
 
 	defaultFunctionServe struct {
@@ -45,7 +72,20 @@ func NewFunctionServe(cli zrpc.Client) FunctionServe {
 	}
 }
 
+// 发送邮箱验证码
 func (m *defaultFunctionServe) SendEmailAuth(ctx context.Context, in *SendEmailAuthReq, opts ...grpc.CallOption) (*SendEmailAuthResp, error) {
 	client := shop.NewFunctionServeClient(m.cli.Conn())
 	return client.SendEmailAuth(ctx, in, opts...)
+}
+
+// 上传如图片
+func (m *defaultFunctionServe) UploadImg(ctx context.Context, in *UploadImgReq, opts ...grpc.CallOption) (*UploadImgResp, error) {
+	client := shop.NewFunctionServeClient(m.cli.Conn())
+	return client.UploadImg(ctx, in, opts...)
+}
+
+// 加载图片
+func (m *defaultFunctionServe) LoadImg(ctx context.Context, in *LoadImgReq, opts ...grpc.CallOption) (*LoadImgResp, error) {
+	client := shop.NewFunctionServeClient(m.cli.Conn())
+	return client.LoadImg(ctx, in, opts...)
 }

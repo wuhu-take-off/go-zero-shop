@@ -22,7 +22,20 @@ func NewFunctionServeServer(svcCtx *svc.ServiceContext) *FunctionServeServer {
 	}
 }
 
+// 发送邮箱验证码
 func (s *FunctionServeServer) SendEmailAuth(ctx context.Context, in *shop.SendEmailAuthReq) (*shop.SendEmailAuthResp, error) {
 	l := functionservelogic.NewSendEmailAuthLogic(ctx, s.svcCtx)
 	return l.SendEmailAuth(in)
+}
+
+// 上传如图片
+func (s *FunctionServeServer) UploadImg(ctx context.Context, in *shop.UploadImgReq) (*shop.UploadImgResp, error) {
+	l := functionservelogic.NewUploadImgLogic(ctx, s.svcCtx)
+	return l.UploadImg(in)
+}
+
+// 加载图片
+func (s *FunctionServeServer) LoadImg(ctx context.Context, in *shop.LoadImgReq) (*shop.LoadImgResp, error) {
+	l := functionservelogic.NewLoadImgLogic(ctx, s.svcCtx)
+	return l.LoadImg(in)
 }

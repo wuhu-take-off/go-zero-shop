@@ -94,7 +94,7 @@ message GoodsAddReq{
   //0：下架 1：上架
   int32 status =4;
   //商品描述
-  optional string describe =5;
+  optional string description =5;
   string img = 6;
   //规格列表
   repeated SpecificationReq specification_list = 7;
@@ -133,7 +133,7 @@ service GoodsServe{
   rpc GoodsAdd (GoodsAddReq) returns (GoodsAddResp);
   //更新商品
   rpc GoodsUpdate(GoodsUpdateReq) returns (GoodsUpdateResp);
-  //删除山炮
+  //删除商品
   rpc GoodsDel(GoodsDelReq) returns (GoodsDelResp);
 }
 
@@ -145,17 +145,264 @@ message SendEmailAuthResp{
   int32 OK = 1;
 }
 
+//图片请求
+message UploadImgReq{
+  //图片二进制
+  bytes img = 1;
+  //图片对应的商品ID
+  int32 goods_id = 2;
+}
+message UploadImgResp{
+  //图片URl
+  string url = 1;
+}
+
+message LoadImgReq{
+  string url = 1;
+}
+message LoadImgResp{
+  bytes img = 1;
+}
 
 service FunctionServe{
+  //发送邮箱验证码
   rpc SendEmailAuth (SendEmailAuthReq) returns (SendEmailAuthResp);
+  //上传如图片
+  rpc UploadImg (UploadImgReq) returns (UploadImgResp);
+  //加载图片
+  rpc LoadImg (LoadImgReq) returns (LoadImgResp);
+}
+
+//获取任务列表请求
+message TaskListReq{
+  //用户申请ID
+  int32 user_id = 1;
+  //任务在线状态
+  optional int32 status = 2;
+  //任务类型id
+  optional int32 task_type_id = 3;
+  //任务名称
+  optional string task_name = 4;
+  //任务ID
+  optional int32 task_id = 5;
+}
+//任务列表
+message TaskList{
+  //任务ID
+  int32 task_id = 1;
+  //任务名称
+  string task_name = 2;
+  //任务类型ID
+  string task_type_id = 3;
+  //任务状态
+  int32 status = 4;
+  //任务描述
+  string description = 5;
+  //任务积分
+  int32 score = 6;
+}
+//任务列表响应
+message TaskListResp{
+  //任务列表
+  repeated TaskList task_list = 1;
+  //列表总数量
+  int32 count = 2;
+  //条数
+  int32 limit = 3;
+  //页数
+  int32 number = 4;
+  //当前页码
+  int32 page = 5;
+}
+//修改任务请求
+message UpdateTaskReq{
+  //任务ID
+  int32 task_id = 1;
+  //任务名称
+  optional string task_name = 2;
+  //任务类型ID
+  optional int32 task_type_id = 3;
+  //任务状态
+  optional int32 task_state = 4;
+  //任务描述
+  optional string description = 5;
+  //任务分数
+  optional int32 score = 6;
+}
+
+message UpdateTaskResp{
+  bool ok = 1;
+}
+
+//任务服务
+service TaskServe{
+  //获取任务列表
+  rpc TaskList (TaskListReq) returns (TaskListResp);
+  //更新任务信息
+  rpc UpdateTask (UpdateTaskReq) returns (UpdateTaskResp);
+}
+
+//获取订单列表
+message OrderListReq{
+  //用户Id
+  int32 user_id = 1;
+  //收件人
+  optional string recipient_name = 2;
+  //联系电话
+  optional string recipient_phone = 3;
+  //下单时间
+  optional int64 order_time = 4;
+  //商品名称
+  optional string goods_name = 5;
+  //订单号
+  optional int64 order_id = 6;
+}
+
+//订单列表
+message OrderList{
+  //订单创建时间
+  int64 create_time = 1;
+  //订单号
+  int64 order_id = 2;
+  //商品名字
+  string goods_name = 3;
+  //商品规格
+  string specification_size = 4;
+  //下单数量
+  int32 order_num = 5;
+  //收件人
+  string recipient_name = 6;
+  //联系方式
+  string phone = 7;
+  //收件地址
+  string address = 8;
+  //消耗积分
+  int32 score = 9;
+  //快递单号
+  optional string courier_number = 10;
+}
+
+message OrderListResp{
+  //订单列表
+  repeated OrderList order_list = 1;
+  //列表总数量
+  int32 count = 2;
+  //条数
+  int32 limit = 3;
+  //页数
+  int32 number = 4;
+  //当前页码
+  int32 page = 5;
+}
+
+//更新快递单号请求
+message UpdateCourierNumberReq{
+  //用户ID
+  int32 user_id = 1;
+  //订单ID
+  int64 order_id = 2;
+  //快递单号
+  string CourierNumber = 3;
+}
+
+message UpdateCourierNumberResp{
+  bool ok = 1;
+}
+
+//订单服务
+service OrderServe{
+  //获取任务列表
+  rpc OrderList (OrderListReq) returns (OrderListResp);
+  //更新任务信息
+  rpc UpdateCourierNumber (UpdateCourierNumberReq) returns (UpdateCourierNumberResp);
 }
 
 
-message TaskReq{
+//商户列表请求
+message MerchantListReq{
+  //用户Id
   int32 user_id = 1;
-  optional int32 status = 2;
-  optional int32 task_type_id = 3;
-  optional string task_name = 4;
-  optional int32 task_id = 5;
+  //商户在线状态
+  optional int32 merchant_status = 2;
+  //商户名
+  optional string merchant_name = 3;
+  //商户ID
+  optional int32 merchant_id = 4;
+}
+//商户列表
+message MerchantList{
+  //商户名
+  string merchant_name = 1;
+  //商户id
+  int32 merchant_id = 2;
+  //商铺状态，当商铺状态为离线时，该商铺所有商品都会下架
+  int32 merchant_status = 3;
+  //联系人
+  string linkname = 4;
+  //联系方式
+  string phone = 5;
+  //角色
+  int32 role = 6;
+}
+
+message MerchantListResp{
+  //订单列表
+  repeated MerchantList merchant_list = 1;
+  //列表总数量
+  int32 count = 2;
+  //条数
+  int32 limit = 3;
+  //页数
+  int32 number = 4;
+  //当前页码
+  int32 page = 5;
+}
+
+
+
+
+message AddMerchantReq{
+  //用户Id
+  int32 user_id = 1;
+  //商铺名称
+  string merchant_name = 2;
+  //商铺状态
+  int32 merchant_status = 4;
+  //联系人
+  string linkname = 5;
+  //联系方式
+  string phone = 6;
+}
+message AddMerchantResp{
+  int32 ok = 1;
+}
+
+message UpdateMerchantReq{
+  //用户Id
+  int32 user_id = 1;
+  //商铺名称
+  optional string merchant_name = 2;
+  //商铺状态
+  optional int32 merchant_status = 4;
+  //联系人
+  optional string linkname = 5;
+  //联系方式
+  optional string phone = 6;
+}
+message UpdateMerchantResp{
+  int32 ok = 1;
+}
+message DelMerchantReq{
+  //用户ID
+  int32 user_id = 1;
+  int32 merchant_id = 2;
+}
+message DelMerchantResp{
+  int32 ok = 1;
+}
+service MerchantServe{
+  rpc MerchantList (MerchantListReq) returns (MerchantListResp);
+  rpc UpdateMerchant (UpdateMerchantReq) returns (UpdateMerchantResp);
+  rpc DelMerchant (DelMerchantReq) returns (DelMerchantResp);
 }
 // goctl rpc protoc shop.proto --go_out=. --go-grpc_out=. --zrpc_out=. -m
