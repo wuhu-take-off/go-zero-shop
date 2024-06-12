@@ -7,6 +7,9 @@ import (
 	"TongChi_shop/rpc/internal/config"
 	functionserveServer "TongChi_shop/rpc/internal/server/functionserve"
 	goodsserveServer "TongChi_shop/rpc/internal/server/goodsserve"
+	merchantserveServer "TongChi_shop/rpc/internal/server/merchantserve"
+	orderserveServer "TongChi_shop/rpc/internal/server/orderserve"
+	taskserveServer "TongChi_shop/rpc/internal/server/taskserve"
 	userserveServer "TongChi_shop/rpc/internal/server/userserve"
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
@@ -31,6 +34,9 @@ func main() {
 		shop.RegisterUserServeServer(grpcServer, userserveServer.NewUserServeServer(ctx))
 		shop.RegisterGoodsServeServer(grpcServer, goodsserveServer.NewGoodsServeServer(ctx))
 		shop.RegisterFunctionServeServer(grpcServer, functionserveServer.NewFunctionServeServer(ctx))
+		shop.RegisterTaskServeServer(grpcServer, taskserveServer.NewTaskServeServer(ctx))
+		shop.RegisterOrderServeServer(grpcServer, orderserveServer.NewOrderServeServer(ctx))
+		shop.RegisterMerchantServeServer(grpcServer, merchantserveServer.NewMerchantServeServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
