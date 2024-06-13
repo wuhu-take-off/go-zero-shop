@@ -126,6 +126,21 @@ message GoodsDelResp{
   bool OK = 1;
 }
 
+
+//获取商品类型列表
+message GoodsTypeList {
+  int32 goods_type_id = 1;
+  string goods_type_name = 2;
+}
+message GoodsTypeListReq{
+
+}
+message GoodsTypeListResp{
+  repeated GoodsTypeList goods_type_list = 1;
+  int32 count = 2;
+}
+
+
 service GoodsServe{
   //获取商品列表
   rpc GoodsList (GoodsListReq) returns (GoodsListResp);
@@ -135,6 +150,8 @@ service GoodsServe{
   rpc GoodsUpdate(GoodsUpdateReq) returns (GoodsUpdateResp);
   //删除商品
   rpc GoodsDel(GoodsDelReq) returns (GoodsDelResp);
+  //获取商品类型列表
+  rpc GoodsTypeList(GoodsTypeListReq)returns (GoodsTypeListResp);
 }
 
 
@@ -185,6 +202,10 @@ message TaskListReq{
   optional string task_name = 4;
   //任务ID
   optional int32 task_id = 5;
+  //页码
+  int32 page = 6;
+  //条数
+  int32 limit = 7;
 }
 //任务列表
 message TaskList{
@@ -193,7 +214,7 @@ message TaskList{
   //任务名称
   string task_name = 2;
   //任务类型ID
-  string task_type_id = 3;
+  int32 task_type_id = 3;
   //任务状态
   int32 status = 4;
   //任务描述
@@ -216,22 +237,28 @@ message TaskListResp{
 }
 //修改任务请求
 message UpdateTaskReq{
+  int32 user_id = 1;
   //任务ID
-  int32 task_id = 1;
-  //任务名称
-  optional string task_name = 2;
-  //任务类型ID
-  optional int32 task_type_id = 3;
-  //任务状态
-  optional int32 task_state = 4;
-  //任务描述
-  optional string description = 5;
+  int32 task_id = 2;
   //任务分数
-  optional int32 score = 6;
+  int32 score = 3;
 }
 
 message UpdateTaskResp{
   bool ok = 1;
+}
+
+//获取任务类型列表
+message TaskTypeList {
+  int32 task_type_id = 1;
+  string task_type_name = 2;
+}
+message TaskTypeListReq{
+
+}
+message TaskTypeListResp{
+  repeated TaskTypeList task_type_list = 1;
+  int32 count = 2;
 }
 
 //任务服务
@@ -240,6 +267,8 @@ service TaskServe{
   rpc TaskList (TaskListReq) returns (TaskListResp);
   //更新任务信息
   rpc UpdateTask (UpdateTaskReq) returns (UpdateTaskResp);
+  //获取任务类型列表
+  rpc TaskTypeList (TaskTypeListReq) returns (TaskTypeListResp);
 }
 
 //获取订单列表
@@ -256,6 +285,10 @@ message OrderListReq{
   optional string goods_name = 5;
   //订单号
   optional int64 order_id = 6;
+  //页码
+  int32 page = 7;
+  //条数
+  int32 limit = 8;
 }
 
 //订单列表
@@ -328,6 +361,10 @@ message MerchantListReq{
   optional string merchant_name = 3;
   //商户ID
   optional int32 merchant_id = 4;
+  //页码
+  int32 page = 5;
+  //条数
+  int32 limit = 6;
 }
 //商户列表
 message MerchantList{

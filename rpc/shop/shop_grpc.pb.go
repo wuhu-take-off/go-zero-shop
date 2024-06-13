@@ -109,10 +109,11 @@ var UserServe_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	GoodsServe_GoodsList_FullMethodName   = "/shop.GoodsServe/GoodsList"
-	GoodsServe_GoodsAdd_FullMethodName    = "/shop.GoodsServe/GoodsAdd"
-	GoodsServe_GoodsUpdate_FullMethodName = "/shop.GoodsServe/GoodsUpdate"
-	GoodsServe_GoodsDel_FullMethodName    = "/shop.GoodsServe/GoodsDel"
+	GoodsServe_GoodsList_FullMethodName     = "/shop.GoodsServe/GoodsList"
+	GoodsServe_GoodsAdd_FullMethodName      = "/shop.GoodsServe/GoodsAdd"
+	GoodsServe_GoodsUpdate_FullMethodName   = "/shop.GoodsServe/GoodsUpdate"
+	GoodsServe_GoodsDel_FullMethodName      = "/shop.GoodsServe/GoodsDel"
+	GoodsServe_GoodsTypeList_FullMethodName = "/shop.GoodsServe/GoodsTypeList"
 )
 
 // GoodsServeClient is the client API for GoodsServe service.
@@ -127,6 +128,8 @@ type GoodsServeClient interface {
 	GoodsUpdate(ctx context.Context, in *GoodsUpdateReq, opts ...grpc.CallOption) (*GoodsUpdateResp, error)
 	// 删除商品
 	GoodsDel(ctx context.Context, in *GoodsDelReq, opts ...grpc.CallOption) (*GoodsDelResp, error)
+	// 获取商品类型列表
+	GoodsTypeList(ctx context.Context, in *GoodsTypeListReq, opts ...grpc.CallOption) (*GoodsTypeListResp, error)
 }
 
 type goodsServeClient struct {
@@ -173,6 +176,15 @@ func (c *goodsServeClient) GoodsDel(ctx context.Context, in *GoodsDelReq, opts .
 	return out, nil
 }
 
+func (c *goodsServeClient) GoodsTypeList(ctx context.Context, in *GoodsTypeListReq, opts ...grpc.CallOption) (*GoodsTypeListResp, error) {
+	out := new(GoodsTypeListResp)
+	err := c.cc.Invoke(ctx, GoodsServe_GoodsTypeList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GoodsServeServer is the server API for GoodsServe service.
 // All implementations must embed UnimplementedGoodsServeServer
 // for forward compatibility
@@ -185,6 +197,8 @@ type GoodsServeServer interface {
 	GoodsUpdate(context.Context, *GoodsUpdateReq) (*GoodsUpdateResp, error)
 	// 删除商品
 	GoodsDel(context.Context, *GoodsDelReq) (*GoodsDelResp, error)
+	// 获取商品类型列表
+	GoodsTypeList(context.Context, *GoodsTypeListReq) (*GoodsTypeListResp, error)
 	mustEmbedUnimplementedGoodsServeServer()
 }
 
@@ -203,6 +217,9 @@ func (UnimplementedGoodsServeServer) GoodsUpdate(context.Context, *GoodsUpdateRe
 }
 func (UnimplementedGoodsServeServer) GoodsDel(context.Context, *GoodsDelReq) (*GoodsDelResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GoodsDel not implemented")
+}
+func (UnimplementedGoodsServeServer) GoodsTypeList(context.Context, *GoodsTypeListReq) (*GoodsTypeListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GoodsTypeList not implemented")
 }
 func (UnimplementedGoodsServeServer) mustEmbedUnimplementedGoodsServeServer() {}
 
@@ -289,6 +306,24 @@ func _GoodsServe_GoodsDel_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GoodsServe_GoodsTypeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GoodsTypeListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GoodsServeServer).GoodsTypeList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GoodsServe_GoodsTypeList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GoodsServeServer).GoodsTypeList(ctx, req.(*GoodsTypeListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GoodsServe_ServiceDesc is the grpc.ServiceDesc for GoodsServe service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -311,6 +346,10 @@ var GoodsServe_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GoodsDel",
 			Handler:    _GoodsServe_GoodsDel_Handler,
+		},
+		{
+			MethodName: "GoodsTypeList",
+			Handler:    _GoodsServe_GoodsTypeList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -488,8 +527,9 @@ var FunctionServe_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	TaskServe_TaskList_FullMethodName   = "/shop.TaskServe/TaskList"
-	TaskServe_UpdateTask_FullMethodName = "/shop.TaskServe/UpdateTask"
+	TaskServe_TaskList_FullMethodName     = "/shop.TaskServe/TaskList"
+	TaskServe_UpdateTask_FullMethodName   = "/shop.TaskServe/UpdateTask"
+	TaskServe_TaskTypeList_FullMethodName = "/shop.TaskServe/TaskTypeList"
 )
 
 // TaskServeClient is the client API for TaskServe service.
@@ -500,6 +540,8 @@ type TaskServeClient interface {
 	TaskList(ctx context.Context, in *TaskListReq, opts ...grpc.CallOption) (*TaskListResp, error)
 	// 更新任务信息
 	UpdateTask(ctx context.Context, in *UpdateTaskReq, opts ...grpc.CallOption) (*UpdateTaskResp, error)
+	// 获取任务类型列表
+	TaskTypeList(ctx context.Context, in *TaskTypeListReq, opts ...grpc.CallOption) (*TaskTypeListResp, error)
 }
 
 type taskServeClient struct {
@@ -528,6 +570,15 @@ func (c *taskServeClient) UpdateTask(ctx context.Context, in *UpdateTaskReq, opt
 	return out, nil
 }
 
+func (c *taskServeClient) TaskTypeList(ctx context.Context, in *TaskTypeListReq, opts ...grpc.CallOption) (*TaskTypeListResp, error) {
+	out := new(TaskTypeListResp)
+	err := c.cc.Invoke(ctx, TaskServe_TaskTypeList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaskServeServer is the server API for TaskServe service.
 // All implementations must embed UnimplementedTaskServeServer
 // for forward compatibility
@@ -536,6 +587,8 @@ type TaskServeServer interface {
 	TaskList(context.Context, *TaskListReq) (*TaskListResp, error)
 	// 更新任务信息
 	UpdateTask(context.Context, *UpdateTaskReq) (*UpdateTaskResp, error)
+	// 获取任务类型列表
+	TaskTypeList(context.Context, *TaskTypeListReq) (*TaskTypeListResp, error)
 	mustEmbedUnimplementedTaskServeServer()
 }
 
@@ -548,6 +601,9 @@ func (UnimplementedTaskServeServer) TaskList(context.Context, *TaskListReq) (*Ta
 }
 func (UnimplementedTaskServeServer) UpdateTask(context.Context, *UpdateTaskReq) (*UpdateTaskResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTask not implemented")
+}
+func (UnimplementedTaskServeServer) TaskTypeList(context.Context, *TaskTypeListReq) (*TaskTypeListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TaskTypeList not implemented")
 }
 func (UnimplementedTaskServeServer) mustEmbedUnimplementedTaskServeServer() {}
 
@@ -598,6 +654,24 @@ func _TaskServe_UpdateTask_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TaskServe_TaskTypeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TaskTypeListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServeServer).TaskTypeList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TaskServe_TaskTypeList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServeServer).TaskTypeList(ctx, req.(*TaskTypeListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TaskServe_ServiceDesc is the grpc.ServiceDesc for TaskServe service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -612,6 +686,10 @@ var TaskServe_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateTask",
 			Handler:    _TaskServe_UpdateTask_Handler,
+		},
+		{
+			MethodName: "TaskTypeList",
+			Handler:    _TaskServe_TaskTypeList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
