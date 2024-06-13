@@ -45,3 +45,9 @@ func (s *GoodsServeServer) GoodsDel(ctx context.Context, in *shop.GoodsDelReq) (
 	l := goodsservelogic.NewGoodsDelLogic(ctx, s.svcCtx)
 	return l.GoodsDel(in)
 }
+
+// 获取商品类型列表
+func (s *GoodsServeServer) GoodsTypeList(ctx context.Context, in *shop.GoodsTypeListReq) (*shop.GoodsTypeListResp, error) {
+	l := goodsservelogic.NewGoodsTypeListLogic(ctx, s.svcCtx)
+	return l.GoodsTypeList(in)
+}

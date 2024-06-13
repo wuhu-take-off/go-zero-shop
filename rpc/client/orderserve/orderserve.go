@@ -24,6 +24,9 @@ type (
 	GoodsList               = shop.GoodsList
 	GoodsListReq            = shop.GoodsListReq
 	GoodsListResp           = shop.GoodsListResp
+	GoodsTypeList           = shop.GoodsTypeList
+	GoodsTypeListReq        = shop.GoodsTypeListReq
+	GoodsTypeListResp       = shop.GoodsTypeListResp
 	GoodsUpdateReq          = shop.GoodsUpdateReq
 	GoodsUpdateResp         = shop.GoodsUpdateResp
 	LoadImgReq              = shop.LoadImgReq
@@ -41,6 +44,9 @@ type (
 	TaskList                = shop.TaskList
 	TaskListReq             = shop.TaskListReq
 	TaskListResp            = shop.TaskListResp
+	TaskTypeList            = shop.TaskTypeList
+	TaskTypeListReq         = shop.TaskTypeListReq
+	TaskTypeListResp        = shop.TaskTypeListResp
 	UpdateCourierNumberReq  = shop.UpdateCourierNumberReq
 	UpdateCourierNumberResp = shop.UpdateCourierNumberResp
 	UpdateMerchantReq       = shop.UpdateMerchantReq

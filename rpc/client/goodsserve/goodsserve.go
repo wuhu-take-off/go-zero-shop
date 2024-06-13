@@ -24,6 +24,9 @@ type (
 	GoodsList               = shop.GoodsList
 	GoodsListReq            = shop.GoodsListReq
 	GoodsListResp           = shop.GoodsListResp
+	GoodsTypeList           = shop.GoodsTypeList
+	GoodsTypeListReq        = shop.GoodsTypeListReq
+	GoodsTypeListResp       = shop.GoodsTypeListResp
 	GoodsUpdateReq          = shop.GoodsUpdateReq
 	GoodsUpdateResp         = shop.GoodsUpdateResp
 	LoadImgReq              = shop.LoadImgReq
@@ -41,6 +44,9 @@ type (
 	TaskList                = shop.TaskList
 	TaskListReq             = shop.TaskListReq
 	TaskListResp            = shop.TaskListResp
+	TaskTypeList            = shop.TaskTypeList
+	TaskTypeListReq         = shop.TaskTypeListReq
+	TaskTypeListResp        = shop.TaskTypeListResp
 	UpdateCourierNumberReq  = shop.UpdateCourierNumberReq
 	UpdateCourierNumberResp = shop.UpdateCourierNumberResp
 	UpdateMerchantReq       = shop.UpdateMerchantReq
@@ -61,6 +67,8 @@ type (
 		GoodsUpdate(ctx context.Context, in *GoodsUpdateReq, opts ...grpc.CallOption) (*GoodsUpdateResp, error)
 		// 删除商品
 		GoodsDel(ctx context.Context, in *GoodsDelReq, opts ...grpc.CallOption) (*GoodsDelResp, error)
+		// 获取商品类型列表
+		GoodsTypeList(ctx context.Context, in *GoodsTypeListReq, opts ...grpc.CallOption) (*GoodsTypeListResp, error)
 	}
 
 	defaultGoodsServe struct {
@@ -96,4 +104,10 @@ func (m *defaultGoodsServe) GoodsUpdate(ctx context.Context, in *GoodsUpdateReq,
 func (m *defaultGoodsServe) GoodsDel(ctx context.Context, in *GoodsDelReq, opts ...grpc.CallOption) (*GoodsDelResp, error) {
 	client := shop.NewGoodsServeClient(m.cli.Conn())
 	return client.GoodsDel(ctx, in, opts...)
+}
+
+// 获取商品类型列表
+func (m *defaultGoodsServe) GoodsTypeList(ctx context.Context, in *GoodsTypeListReq, opts ...grpc.CallOption) (*GoodsTypeListResp, error) {
+	client := shop.NewGoodsServeClient(m.cli.Conn())
+	return client.GoodsTypeList(ctx, in, opts...)
 }
