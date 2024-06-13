@@ -160,7 +160,7 @@ FROM
 func (m *defaultUserInfosModel) CountUserGoods(userId ...interface{}) int32 {
 	sql := fmt.Sprintf(`SELECT
 		count(*)
-	FROM
+		FROM
 		user_infos 
 		JOIN merchant_infos ON %s user_infos.user_id = merchant_infos.user_id
 	 	JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
@@ -194,13 +194,24 @@ func (m *defaultUserInfosModel) admiGoods(page, limit int32, sql string, values 
 		sql = "WHERE " + sql
 	}
 	values = append(values, limit, offset)
-	sql = fmt.Sprintf("SELECT "+userGoodsSqlFile+`
-	FROM
-		user_infos
-		JOIN merchant_infos ON user_infos.user_id = merchant_infos.user_id
-	 	JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
-		%s
-		LIMIT ? OFFSET ?; `, sql)
+	//sql = fmt.Sprintf("SELECT "+userGoodsSqlFile+`
+	//FROM
+	//	user_infos
+	//	JOIN merchant_infos ON user_infos.user_id = merchant_infos.user_id
+	// 	JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
+	//	%s
+	//	LIMIT ? OFFSET ?; `, sql)
+
+	//修改为下面的sql语句，使得%s为sql成功占位
+	baseSQL := "SELECT " + userGoodsSqlFile + `
+    FROM
+        user_infos
+        JOIN merchant_infos ON user_infos.user_id = merchant_infos.user_id
+        JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
+        %s
+    LIMIT ? OFFSET ?;`
+
+	sql = fmt.Sprintf(baseSQL, sql)
 
 	//获取用户所拥有的所有商户的商品信息
 	m.DB.Raw(sql, values...).Find(&userGoods)
@@ -219,13 +230,24 @@ func (m *defaultUserInfosModel) userGoods(userId, page, limit int32, sql string,
 	}
 	values[0] = userId
 	values = append(values, limit, offset)
-	sql = fmt.Sprintf("SELECT "+userGoodsSqlFile+`
-	FROM
-		user_infos
-		JOIN merchant_infos ON user_infos.user_id = ? AND user_infos.user_id = merchant_infos.user_id
-	 	JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
-		%s
-		LIMIT ? OFFSET ?; `, sql)
+	//sql = fmt.Sprintf("SELECT "+userGoodsSqlFile+`
+	//FROM
+	//	user_infos
+	//	JOIN merchant_infos ON user_infos.user_id = ? AND user_infos.user_id = merchant_infos.user_id
+	// 	JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
+	//	%s
+	//	LIMIT ? OFFSET ?; `, sql)
+
+	//修改为下面的sql语句，使得%s为sql成功占位
+	baseSQL := "SELECT " + userGoodsSqlFile + `
+    FROM
+        user_infos
+        JOIN merchant_infos ON user_infos.user_id = merchant_infos.user_id
+        JOIN goods_infos ON merchant_infos.merchant_id = goods_infos.merchant_id AND goods_infos.delete_time IS NULL
+        %s
+    LIMIT ? OFFSET ?;`
+
+	sql = fmt.Sprintf(baseSQL, sql)
 
 	//获取用户所拥有的所有商户的商品信息
 
