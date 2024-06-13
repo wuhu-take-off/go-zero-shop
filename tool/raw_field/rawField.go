@@ -75,6 +75,10 @@ func UpdateFieldMap(in any, change map[string]string) ([]string, []interface{}) 
 				values = append(values, val.Interface().(int32))
 			case reflect.String:
 				values = append(values, val.Interface().(string))
+			case reflect.Int64:
+				values = append(values, val.Interface().(int64))
+			default:
+				sql = sql[:len(sql)-1]
 			}
 			//fmt.Println(column, val)
 		}

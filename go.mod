@@ -3,7 +3,9 @@ module TongChi_shop
 go 1.21.6
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/redis/go-redis/v9 v9.4.0
+	github.com/willf/bloom v2.0.3+incompatible
 	github.com/zeromicro/go-zero v1.6.5
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
@@ -55,7 +57,6 @@ require (
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/willf/bitset v1.1.11 // indirect
-	github.com/willf/bloom v2.0.3+incompatible // indirect
 	go.etcd.io/etcd/api/v3 v3.5.13 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.13 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.13 // indirect
