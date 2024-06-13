@@ -28,6 +28,23 @@ var (
 		"status":            "goods_infos.state",
 		"goods_description": "goods_infos.description",
 	}
+
+	userTaskSqlFile = `
+		task_infos.task_id,
+		task_infos.NAME AS task_name,
+		task_infos.task_type_id,
+		task_infos.state AS status,
+		task_infos.description,
+		task_infos.score
+`
+	UserTaskSqlFileMap = map[string]string{
+		"task_id":      "task_infos.task_id",
+		"task_name":    "task_infos.NAME",
+		"task_type_id": "task_infos.task_type_id",
+		"status":       "task_infos.state",
+		"description":  "task_infos.description",
+		"score":        "task_infos.score",
+	}
 )
 
 type (
@@ -35,6 +52,8 @@ type (
 		EmailExist(email string) bool
 		UserRole(userId int32) int32
 		FindUsersGoods(userId, page, limit int32, sql string, values ...interface{}) (int32, []UsersGoods)
+		FindUserTask(userId, page, limit int32, sql string, values ...interface{}) (int32, []UserTask)
+		CheckUsersTask(userId, taskId int32) bool
 	}
 
 	defaultUserInfosModel struct {
@@ -59,6 +78,16 @@ type (
 		GoodsDescription string                                   `gorm:"column:merchant_description"`
 		Specifications   []specification_model.SpecificationInfos `gorm:"foreignKey:GoodsId;references:GoodsId"`
 	}
+
+	//UserTask 用户的任务列表
+	UserTask struct {
+		TaskId      int32  `gorm:"column:task_id"`
+		TaskName    string `gorm:"column:task_name"`
+		TaskTypeId  int32  `gorm:"column:task_type_id"`
+		Status      int32  `gorm:"column:status"`
+		Description string `gorm:"column:description"`
+		Score       int32  `gorm:"column:score"`
+	}
 )
 
 func (users *UsersGoods) ToGoodsListResp() *shop.GoodsList {
@@ -75,6 +104,17 @@ func (users *UsersGoods) ToGoodsListResp() *shop.GoodsList {
 		list.SpecificationList = append(list.SpecificationList, specification.ToSpecificationResp())
 	}
 	return list
+}
+func (task *UserTask) ToTaskListResp() *shop.TaskList {
+	return &shop.TaskList{
+		TaskId:      task.TaskId,
+		TaskName:    task.TaskName,
+		TaskTypeId:  task.TaskTypeId,
+		Status:      task.Status,
+		Description: task.Description,
+		Score:       task.Score,
+	}
+
 }
 
 func (user *UserInfos) TableName() string {
@@ -94,6 +134,29 @@ func (m *defaultUserInfosModel) UserRole(userId int32) int32 {
 	return role
 }
 
+// CheckUsersTask 判断用户是否能够管理该商品
+func (m *defaultUserInfosModel) CheckUsersTask(userId, taskId int32) bool {
+	role := m.UserRole(userId)
+	switch role {
+	case 1:
+		return true
+	case 2:
+		var count int32
+		m.DB.Raw(`
+SELECT
+	count(*)
+FROM
+	user_infos
+	JOIN merchant_infos ON user_infos.user_id = merchant_infos.user_id
+	JOIN task_infos ON task_id = ? AND merchant_infos.merchant_id = task_infos.merchant_id
+`, taskId).Scan(&count)
+		return count != 0
+	default:
+		return false
+	}
+}
+
+// CountUserGoods 统计用户的所拥有的商品数量，如果没有userid参数就默认为管理员
 func (m *defaultUserInfosModel) CountUserGoods(userId ...interface{}) int32 {
 	sql := fmt.Sprintf(`SELECT
 		count(*)
@@ -168,4 +231,91 @@ func (m *defaultUserInfosModel) userGoods(userId, page, limit int32, sql string,
 
 	m.DB.Raw(sql, values...).Find(&userGoods)
 	return userGoods
+}
+
+// CountUserTask 统计用户能够管理的task数量
+func (m *defaultUserInfosModel) CountUserTask(userid ...interface{}) int32 {
+	var count int32
+	if len(userid) > 1 {
+		return 0
+	}
+	val := ""
+	if len(userid) == 1 {
+		val = "user_infos.uer_id = ? AND"
+	}
+	sql := `
+SELECT
+	count(*)
+FROM
+	user_infos
+	JOIN merchant_infos ON merchant_infos.delete_time IS NULL 
+	%s
+	AND user_infos.user_id = merchant_infos.user_id
+	JOIN task_infos ON merchant_infos.merchant_id = task_infos.merchant_id
+`
+	sql = fmt.Sprintf(sql, val)
+	m.DB.Raw(sql, userid...).Scan(&count)
+	return count
+}
+
+func (m *defaultUserInfosModel) FindUserTask(userId, page, limit int32, sql string, values ...interface{}) (int32, []UserTask) {
+	role := m.UserRole(userId)
+	switch role {
+	case 1: //管理员
+		return m.CountUserTask(), m.admiTask(page, limit, sql, values...)
+	case 2: //普通用户
+		return m.CountUserTask(), m.userTask(userId, page, limit, sql, values...)
+	default:
+		return 0, nil
+	}
+}
+
+func (m *defaultUserInfosModel) admiTask(page, limit int32, sql string, values ...interface{}) []UserTask {
+	offset := page*limit - limit
+	var userTask []UserTask
+	if values != nil {
+		sql = "WHERE " + sql
+	}
+	values = append(values, limit, offset)
+	sql = fmt.Sprintf(`
+SELECT
+	%s
+FROM
+	user_infos
+	JOIN merchant_infos ON merchant_infos.delete_time IS NULL 
+	AND user_infos.user_id = merchant_infos.user_id
+	JOIN task_infos ON merchant_infos.merchant_id = task_infos.merchant_id
+	%s
+	LIMIT ? OFFSET ?	
+`, userTaskSqlFile, sql)
+	m.DB.Raw(sql, values...).Find(&userTask)
+	return userTask
+}
+
+func (m *defaultUserInfosModel) userTask(userId, page int32, limit int32, sql string, values ...interface{}) []UserTask {
+	offset := page*limit - limit
+	var userTask []UserTask
+	if values != nil {
+		sql = "WHERE " + sql
+	}
+	values = append(values, nil)
+	for i := len(values) - 1; i != 0; i-- {
+		values[i] = values[i-1]
+	}
+	values[0] = userId
+	values = append(values, limit, offset)
+	sql = fmt.Sprintf(`
+SELECT
+	%s
+FROM
+	user_infos
+	JOIN merchant_infos ON merchant_infos.delete_time IS NULL
+	AND user_infos.user_id = ?
+	AND user_infos.user_id = merchant_infos.user_id
+	JOIN task_infos ON merchant_infos.merchant_id = task_infos.merchant_id
+	%s
+	LIMIT ? OFFSET ?	
+`, userTaskSqlFile, sql)
+	m.DB.Raw(sql, values...).Find(&userTask)
+	return userTask
 }

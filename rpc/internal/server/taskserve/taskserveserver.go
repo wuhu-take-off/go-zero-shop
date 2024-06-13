@@ -33,3 +33,9 @@ func (s *TaskServeServer) UpdateTask(ctx context.Context, in *shop.UpdateTaskReq
 	l := taskservelogic.NewUpdateTaskLogic(ctx, s.svcCtx)
 	return l.UpdateTask(in)
 }
+
+// 获取任务类型列表
+func (s *TaskServeServer) TaskTypeList(ctx context.Context, in *shop.TaskTypeListReq) (*shop.TaskTypeListResp, error) {
+	l := taskservelogic.NewTaskTypeListLogic(ctx, s.svcCtx)
+	return l.TaskTypeList(in)
+}
