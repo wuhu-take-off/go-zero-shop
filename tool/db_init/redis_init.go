@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/redis/go-redis/v9"
+	"github.com/zeromicro/go-zero/core/threading"
 	"time"
 )
 
@@ -44,8 +45,14 @@ func (m *defaultRedisConn) AddEmailAuth(ctx context.Context, email string) error
 	ttl := m.RDB.TTL(ctx, key)
 	exp, _ := ttl.Result()
 	if ttl.Err() == redis.Nil || exp < reEmailAuthExpiration {
-		m.RDB.Set(ctx, key, auth.CreateAuth(auth.EmailAuthLen), emailAuthExpiration)
+		code := auth.CreateAuth(auth.EmailAuthLen)
+		m.RDB.Set(ctx, key, code, emailAuthExpiration)
+		//异步的go协程发送邮件
+		threading.GoSafe(func() {
+			auth.Send(auth.SendEmail, auth.Password, email, auth.Subject, code)
+		})
 		return nil
+
 	}
 	return errors.New("验证码重复发送")
 }

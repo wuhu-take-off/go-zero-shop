@@ -1,7 +1,9 @@
 package orderservelogic
 
 import (
+	"TongChi_shop/model/order_model"
 	"context"
+	"errors"
 
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
@@ -25,7 +27,12 @@ func NewUpdateCourierNumberLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 // 更新任务信息
 func (l *UpdateCourierNumberLogic) UpdateCourierNumber(in *shop.UpdateCourierNumberReq) (*shop.UpdateCourierNumberResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &shop.UpdateCourierNumberResp{}, nil
+	orderModel := order_model.NewOrderInfosModel(l.svcCtx.DB)
+	if !orderModel.CheckUserRoleToUpCourierNumber(in.UserId, in.OrderId) {
+		return nil, errors.New("非法访问")
+	}
+	orderModel.UpdateCourierNumber(in.OrderId, in.CourierNumber)
+	return &shop.UpdateCourierNumberResp{
+		Ok: true,
+	}, nil
 }

@@ -34,6 +34,7 @@ type (
 		UpdateMerchantInfos(merchantId int32, sql []string, values ...interface{}) error
 		ConfirmUserRole(userId int32, merchantId int32) bool
 		DelMerchantInfos(merchantId int32) error
+		FindMerchantIdList(userId int32) []int32
 	}
 	defaultMerchantInfosModel struct {
 		DB *gorm.DB
@@ -179,4 +180,11 @@ func (m *defaultMerchantInfosModel) UpdateMerchantInfos(merchantId int32, sql []
 // 删除商铺
 func (m *defaultMerchantInfosModel) DelMerchantInfos(merchantId int32) error {
 	return m.DB.Model(&MerchantInfos{}).Where("merchant_id = ?", merchantId).Update("delete_time", time.Now()).Error
+}
+
+// FindMerchantIdList 获取用户所管理的商铺ID列表
+func (m defaultMerchantInfosModel) FindMerchantIdList(userId int32) []int32 {
+	var merchantId []int32
+	m.DB.Model(&MerchantInfos{}).Select("merchant_id").Where("user_id = ? AND delete_time IS NULL", userId).Find(&merchantId)
+	return merchantId
 }
