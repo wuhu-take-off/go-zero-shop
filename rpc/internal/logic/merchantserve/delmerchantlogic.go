@@ -1,7 +1,9 @@
 package merchantservelogic
 
 import (
+	"TongChi_shop/model/merchant_model"
 	"context"
+	"errors"
 
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
@@ -24,7 +26,14 @@ func NewDelMerchantLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DelMe
 }
 
 func (l *DelMerchantLogic) DelMerchant(in *shop.DelMerchantReq) (*shop.DelMerchantResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &shop.DelMerchantResp{}, nil
+	merchantInfosModel := merchant_model.NewMerchantInfosModel(l.svcCtx.DB)
+	if !merchantInfosModel.ConfirmUserRole(in.UserId, in.MerchantId) {
+		return nil, errors.New("非法访问")
+	}
+	if err := merchantInfosModel.DelMerchantInfos(in.MerchantId); err != nil {
+		return nil, errors.New("删除失败")
+	}
+	return &shop.DelMerchantResp{
+		Ok: true,
+	}, nil
 }

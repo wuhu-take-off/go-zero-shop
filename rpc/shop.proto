@@ -414,11 +414,14 @@ message AddMerchantResp{
   int32 ok = 1;
 }
 
+//更新商铺请求
 message UpdateMerchantReq{
   //用户Id
   int32 user_id = 1;
+  //商铺ID
+  int32 merchant_id = 2;
   //商铺名称
-  optional string merchant_name = 2;
+  optional string merchant_name = 3;
   //商铺状态
   optional int32 merchant_status = 4;
   //联系人
@@ -427,7 +430,7 @@ message UpdateMerchantReq{
   optional string phone = 6;
 }
 message UpdateMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 message DelMerchantReq{
   //用户ID
@@ -435,7 +438,7 @@ message DelMerchantReq{
   int32 merchant_id = 2;
 }
 message DelMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 service MerchantServe{
   rpc MerchantList (MerchantListReq) returns (MerchantListResp);
