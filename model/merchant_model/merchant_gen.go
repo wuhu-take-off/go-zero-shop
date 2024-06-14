@@ -8,6 +8,7 @@ import (
 type (
 	merchantInfosModel interface {
 		FindOneMerchant(userId int32) *MerchantInfos
+		FindMerchantIdList(userId int32) []int32
 	}
 	defaultMerchantInfosModel struct {
 		DB *gorm.DB
@@ -31,4 +32,11 @@ func (m defaultMerchantInfosModel) FindOneMerchant(userId int32) *MerchantInfos 
 	infos := &MerchantInfos{}
 	m.DB.Where("user_id = ? AND delete_time IS NULL", userId).First(infos)
 	return infos
+}
+
+// FindMerchantIdList 获取用户所管理的商铺ID列表
+func (m defaultMerchantInfosModel) FindMerchantIdList(userId int32) []int32 {
+	var merchantId []int32
+	m.DB.Model(&MerchantInfos{}).Select("merchant_id").Where("user_id = ? AND delete_time IS NULL", userId).Find(&merchantId)
+	return merchantId
 }

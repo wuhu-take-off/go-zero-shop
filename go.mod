@@ -3,6 +3,7 @@ module TongChi_shop
 go 1.21.6
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/redis/go-redis/v9 v9.4.0
 	github.com/willf/bloom v2.0.3+incompatible
 	github.com/zeromicro/go-zero v1.6.5
