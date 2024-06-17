@@ -44,7 +44,6 @@ type (
 
 @server (
 	prefix: /api/function
-	group:  function
 )
 service function-api {
 	//发送验证码

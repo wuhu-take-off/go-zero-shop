@@ -4,13 +4,23 @@ package handler
 import (
 	"net/http"
 
-	function "TongChi_shop/api/function_api/internal/handler/function"
 	"TongChi_shop/api/function_api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/sendAuth",
+				Handler: SendAuthHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/function"),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.JwtAuthentication},
@@ -33,17 +43,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
-		rest.WithPrefix("/api/function"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/sendAuth",
-				Handler: function.SendAuthHandler(serverCtx),
-			},
-		},
 		rest.WithPrefix("/api/function"),
 	)
 }
