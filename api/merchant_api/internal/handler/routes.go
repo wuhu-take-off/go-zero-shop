@@ -16,6 +16,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/MerchantAdd",
+					Handler: MerchantAddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/MerchantUpdate",
 					Handler: MerchantUpdateHandler(serverCtx),
 				},

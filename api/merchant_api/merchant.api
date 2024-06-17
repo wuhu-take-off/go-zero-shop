@@ -67,6 +67,17 @@ type (
 	MerchantUpDateResp  {}
 )
 
+//添加商铺
+type (
+	MerchantAddReq {
+		MerchantName   string `json:"merchantName"`
+		MerchantStatus int32  `json:"merchantStatus"`
+		Linkname       string `json:"linkname"`
+		Phone          string `json:"phone"`
+	}
+	MerchantAddResp  {}
+)
+
 @server (
 	prefix: /api/merchat
 	jwt:    Auth
@@ -74,16 +85,19 @@ type (
 	middleware: JwtAuthentication
 )
 service merchant-api {
-	//添加商品
+	//添加商铺
 	@handler MerchantDel
 	post /merchantDel (MerchantDelReq)
 
-	//删除商品
+	//获取商铺列表
 	@handler MerchantList
 	post /merchantList (MerchantListReq) returns (MerchantListResp)
 
-	//获取商品列表
+	//更新商品信息
 	@handler MerchantUpdate
 	post /MerchantUpdate (MerchantUpDateReq) returns (MerchantUpDateResp)
+
+	@handler MerchantAdd
+	post /MerchantAdd (MerchantAddReq) returns (MerchantAddResp)
 }
 
