@@ -1,7 +1,10 @@
 package logic
 
 import (
+	"TongChi_shop/tool/jwt_authentication"
 	"context"
+	"errors"
+	"time"
 
 	"TongChi_shop/api/function_api/internal/svc"
 	"TongChi_shop/api/function_api/internal/types"
@@ -24,7 +27,26 @@ func NewNewTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *NewToken
 }
 
 func (l *NewTokenLogic) NewToken(req *types.NewTokenReq) (resp *types.NewTokenResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	//验证token
+	token, ok := l.ctx.Value("token").(string)
+	if !ok {
+		return nil, errors.New("非法访问")
+	}
+	res, err := jwt_authentication.ParseJWT(token, []byte(l.svcCtx.Config.Auth.AccessSecret))
+	userId := res.UserID
+	if err != nil {
+		return nil, errors.New("非法访问")
+	}
+	token, err = jwt_authentication.GenerateJWT(userId, []byte(l.svcCtx.Config.Auth.AccessSecret), time.Duration(l.svcCtx.Config.Auth.AccessExpire)*time.Second)
+	if err != nil {
+		return nil, errors.New("更新失败")
+	}
+	return &types.NewTokenResp{
+		//新token
+		Token: token,
+		//过期时间
+		ExpirationTime: l.svcCtx.Config.Auth.AccessExpire,
+		//期望刷新时间
+		RefreshTime: l.svcCtx.Config.Auth.AccessExpire / 2,
+	}, nil
 }

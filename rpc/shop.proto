@@ -166,19 +166,23 @@ message SendEmailAuthResp{
 message UploadImgReq{
   //图片二进制
   bytes img = 1;
+  string img_name =2;
   //图片对应的商品ID
-  int32 goods_id = 2;
+  int32 goods_id = 3;
 }
 message UploadImgResp{
   //图片URl
   string url = 1;
 }
 
+message Img{
+  bytes img = 1;
+}
 message LoadImgReq{
-  string url = 1;
+  int32 GoodsId = 1;
 }
 message LoadImgResp{
-  bytes img = 1;
+  repeated Img imgs = 1;
 }
 
 service FunctionServe{

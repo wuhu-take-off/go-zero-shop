@@ -29,6 +29,7 @@ type (
 	GoodsTypeListResp       = shop.GoodsTypeListResp
 	GoodsUpdateReq          = shop.GoodsUpdateReq
 	GoodsUpdateResp         = shop.GoodsUpdateResp
+	Img                     = shop.Img
 	LoadImgReq              = shop.LoadImgReq
 	LoadImgResp             = shop.LoadImgResp
 	MerchantList            = shop.MerchantList
