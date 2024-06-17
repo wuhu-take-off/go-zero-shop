@@ -1,0 +1,83 @@
+type (
+	//订单信息
+	OrderList {
+		//下单时间
+		CreateTime int64 `json:"createTime"`
+		//订单号
+		OrderId int32 `json:"orderId"`
+		//商品名称
+		GoodsName string `json:"goodsName"`
+		//规格大小
+		SpecificationSize string `json:"specificationSize"`
+		//下单数量
+		OrderNum int32 `json:"orderNum"`
+		//收件人
+		RecipientName string `json:"recipientName"`
+		//联系方式
+		Phone string `json:"phone"`
+		//收件地址
+		Address string `json:"address"`
+		//消耗积分/每件
+		Score int32 `json:"score"`
+		//快递单号
+		CourierNumber *string `json:"courierNumber,omitempty"`
+	}
+)
+
+//获取订单列表
+type (
+	OrderListReq {
+		//收件人名称
+		RecipientName *string `json:"recipientName,omitempty"`
+		//联系人
+		RecipientPhone *string `json:"recipientPhone,omitempty"`
+		//下单时间
+		OrderTime *int64 `json:"orderTime,omitempty"`
+		//商品名称
+		GoodsName *string `json:"goodsName,omitempty"`
+		//订单Id
+		OrderId *int32 `json:"orderId,omitempty"`
+		//页码
+		Page int32 `json:"page"`
+		//条数
+		Limit int32 `json:"limit"`
+	}
+	OrderListResp {
+		//数据总条数
+		Count int32 `json:"count"`
+		//条数
+		Limit int32 `json:"limit"`
+		//总页数
+		Number int32 `json:"number"`
+		//当前页码
+		Page int32 `json:"page"`
+		//商铺数据
+		List []*OrderList `json:"list"`
+	}
+)
+
+//更新快递单号
+type (
+	UpdateCourierNumberReq {
+		OrderId       int32  `json:"orderId"`
+		CourierNumber string `json:"courierNumber"`
+	}
+	UpdateCourierNumberResp  {}
+)
+
+@server (
+	prefix: /api/order
+	jwt:    Auth
+	//jwt鉴权
+	middleware: JwtAuthentication
+)
+service order-api {
+	//获取商品列表
+	@handler OrderList
+	post /orderList (OrderListReq) returns (OrderListResp)
+
+	//更新快递单号
+	@handler UpdateCourienNumber
+	post /updateCourienNumber (UpdateCourierNumberReq) returns (UpdateCourierNumberResp)
+}
+
