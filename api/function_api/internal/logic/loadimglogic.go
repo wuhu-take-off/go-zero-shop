@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
 	"context"
 
 	"TongChi_shop/api/function_api/internal/svc"
@@ -24,7 +25,19 @@ func NewLoadimgLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoadimgLo
 }
 
 func (l *LoadimgLogic) Loadimg(req *types.LoadImgReq) (resp *types.LoadImgResp, err error) {
-	// todo: add your logic here and delete this line
+	img, err := l.svcCtx.ShopRpc.LoadImg(l.ctx, &shop.LoadImgReq{
+		GoodsId: req.GoodsId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp = new(types.LoadImgResp)
+	for i := 0; i < len(img.Imgs); i++ {
+		t := types.Img{
+			Data: img.Imgs[i].Img,
+		}
+		resp.Imgs = append(resp.Imgs, &t)
+	}
 
 	return
 }

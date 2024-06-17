@@ -1,6 +1,9 @@
 package middleware
 
-import "net/http"
+import (
+	"context"
+	"net/http"
+)
 
 type JwtAuthenticationMiddleware struct {
 }
@@ -11,9 +14,10 @@ func NewJwtAuthenticationMiddleware() *JwtAuthenticationMiddleware {
 
 func (m *JwtAuthenticationMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// TODO generate middleware implement function, delete after code implementation
+		authorization := r.Header.Get("Authorization")
+		ctx := context.WithValue(r.Context(), "token", authorization)
 
 		// Passthrough to next handler if need
-		next(w, r)
+		next(w, r.WithContext(ctx))
 	}
 }

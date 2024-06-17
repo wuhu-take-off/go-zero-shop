@@ -1,7 +1,9 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
 	"context"
+	"errors"
 
 	"TongChi_shop/api/function_api/internal/svc"
 	"TongChi_shop/api/function_api/internal/types"
@@ -23,8 +25,14 @@ func NewSendAuthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAuth
 	}
 }
 
-func (l *SendAuthLogic) SendAuth(req *types.SendAuthReq) (resp *types.SendAuthResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+func (l *SendAuthLogic) SendAuth(req *types.SendAuthReq) (*types.SendAuthResp, error) {
+	resp, err := l.svcCtx.ShopRpc.SendEmailAuth(l.ctx, &shop.SendEmailAuthReq{
+		Email: req.Email,
+	})
+	if err != nil || resp.OK == 0 {
+		return nil, errors.New("发送失败")
+	}
+	return &types.SendAuthResp{
+		OK: true,
+	}, nil
 }

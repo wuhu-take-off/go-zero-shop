@@ -11,8 +11,7 @@ type (
 //上传图片
 type (
 	UploadImgReq {
-		Img     []byte `json:"img"`
-		GoodsId int32  `json:"goodsId"`
+		GoodsId int32 `form:"goodsId"`
 	}
 	UploadImgResp {
 		URL string `json:"url"`
@@ -21,11 +20,14 @@ type (
 
 //下载图片
 type (
+	Img {
+		data []byte `json:"img"`
+	}
 	LoadImgReq {
-		URL string `json:"url"`
+		GoodsId int32 `json:"goodsId"`
 	}
 	LoadImgResp {
-		Img []byte `json:"img"`
+		Imgs []*Img `json:"imgs"`
 	}
 )
 
