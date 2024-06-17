@@ -1,0 +1,89 @@
+type (
+	//商铺信息
+	MerchantList {
+		//商铺名称
+		MerchantNme string `json:"merchantNme"`
+		//商铺Id
+		MerchantId int32 `json:"merchantId"`
+		//商铺状态
+		MerchantStatus int32 `json:"merchantStatus"`
+		//联系人
+		Linkname string `json:"linkname"`
+		//角色
+		Role int32 `json:"role"`
+	}
+)
+
+//删除商铺
+type (
+	MerchantDelReq {
+		MerchantId int32 `json:"merchantId"`
+	}
+	MerchantDelResp  {}
+)
+
+//获取商铺列表
+type (
+	MerchantListReq {
+		//商铺状态
+		MerchantStatus *int32 `json:"merchantStatus,omitempty"`
+		//商铺名称
+		MerchantName *string `json:"merchantName,omitempty"`
+		//商铺ID
+		MerchantId *int32 `json:"merchantId,omitempty"`
+		//页码
+		Page int32 `json:"page"`
+		//条数
+		Limit int32 `json:"limit"`
+	}
+	MerchantListResp {
+		//数据总条数
+		Count int32 `json:"count"`
+		//条数
+		Limit int32 `json:"limit"`
+		//总页数
+		Number int32 `json:"number"`
+		//当前页码
+		Page int32 `json:"page"`
+		//商铺数据
+		List []*MerchantList `json:"list"`
+	}
+)
+
+//更新商品信息
+type (
+	MerchantUpDateReq {
+		//商铺Id
+		MerchantId int32 `json:"merchantId"`
+		//商铺名称
+		MerchantName *string `json:"merchantName,,omitempty"`
+		//商铺状态
+		MerchantStatus *int32 `json:"merchantStatus,omitempty"`
+		//联系人
+		Linkname *string `json:"linkname,omitempty"`
+		//联系方式
+		Phone *string `json:"phone,omitempty"`
+	}
+	MerchantUpDateResp  {}
+)
+
+@server (
+	prefix: /api/merchat
+	jwt:    Auth
+	//jwt鉴权
+	middleware: JwtAuthentication
+)
+service merchant-api {
+	//添加商品
+	@handler MerchantDel
+	post /merchantDel (MerchantDelReq)
+
+	//删除商品
+	@handler MerchantList
+	post /merchantList (MerchantListReq) returns (MerchantListResp)
+
+	//获取商品列表
+	@handler MerchantUpdate
+	post /MerchantUpdate (MerchantUpDateReq) returns (MerchantUpDateResp)
+}
+

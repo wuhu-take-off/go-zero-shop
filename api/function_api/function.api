@@ -1,0 +1,74 @@
+//发送验证码
+type (
+	SendAuthReq {
+		Email string `json:"email"`
+	}
+	SendAuthResp {
+		OK bool `json:"ok"`
+	}
+)
+
+//上传图片
+type (
+	UploadImgReq {
+		Img     []byte `json:"img"`
+		GoodsId int32  `json:"goodsId"`
+	}
+	UploadImgResp {
+		URL string `json:"url"`
+	}
+)
+
+//下载图片
+type (
+	LoadImgReq {
+		URL string `json:"url"`
+	}
+	LoadImgResp {
+		Img []byte `json:"img"`
+	}
+)
+
+//token刷新请求
+type (
+	NewTokenReq  {}
+	NewTokenResp {
+		//新token
+		Token string `json:"token"`
+		//过期时间
+		ExpirationTime int64 `json:"expirationTime"`
+		//期望重新请求时间
+		RefreshTime int64 `json:"refreshTime"`
+	}
+)
+
+@server (
+	prefix: /api/function
+	group:  function
+)
+service function-api {
+	//发送验证码
+	@handler SendAuth
+	post /sendAuth (SendAuthReq) returns (SendAuthResp)
+}
+
+@server (
+	prefix: /api/function
+	jwt:    Auth
+	//jwt鉴权
+	middleware: JwtAuthentication
+)
+service function-api {
+	//上传图片
+	@handler UploadImg
+	post /uploadImg (UploadImgReq) returns (UploadImgResp)
+
+	//加载图片
+	@handler Loadimg
+	post /loadImg (LoadImgReq) returns (LoadImgResp)
+
+	//重新发送验证码
+	@handler NewToken
+	post /newToken (NewTokenReq) returns (NewTokenResp)
+}
+

@@ -1,9 +1,39 @@
-syntax = "v1"
+import "api_model/function.api"
+import "api_model/user.api"
 
-info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
+//功能类请求
+@server (
+	prefix: /api/function
+	group:  function
 )
+service shop-api {
+	@handler SendAuth
+	post /sendAuth (SendAuthReq) returns (SendAuthResp)
+}
+
+@server (
+	prefix: /api/function
+	group:  function
+	jwt:    Auth
+	//jwt鉴权
+	middleware: JwtAuthentication
+)
+service shop-api {
+	@handler UploadImg
+	post /uploadImg (UploadImgReq) returns (UploadImgResp)
+
+	@handler Loadimg
+	post /loadImg (LoadImgReq) returns (LoadImgResp)
+}
+
+//用户请求
+@server (
+	prefix: /api/user
+	group:  user
+)
+service re-api {
+	@handler Login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+//goctl api go -api shop.api -dir .

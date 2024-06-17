@@ -1,0 +1,155 @@
+type (
+	//添加商品规格列表
+	SpecificationAddList {
+		//商品尺寸
+		Size string `json:"size"`
+		//库存
+		Inventory int32 `json:"inventory"`
+		//积分
+		Score int32 `json:"score"`
+	}
+	//规格列表
+	SpecificationList {
+		SpecificationId  int32  `json:"specificationId"`
+		Size             string `json:"size"`
+		DisplayInventory int32  `json:"displayInventory"`
+		RealInventory    int32  `json:"realInventory"`
+		Score            int32  `json:"score"`
+	}
+	//商品列表
+	GoodsList {
+		//商铺名称
+		MerchantName string `json:"merchantName"`
+		//商品Id
+		GoodsId int32 `json:"goodsId"`
+		//商品名称
+		GoodsName string `json:"goodsName"`
+		//商品类型ID
+		GoodsTypeId int32 `json:"goodsTypeId"`
+		//商品状态
+		Status int32 `json:"status"`
+		//规格列表
+		List []*SpecificationList `json:"list"`
+	}
+	//商品类型列表
+	GoodsTypeList {
+		GoodsTypeId   int32  `json:"goodsTypeId"`
+		GoodsTypeName string `json:"goodsTypeName"`
+	}
+)
+
+//添加商品
+type (
+	GoodsAddReq {
+		//商品名称
+		GoodsName string `json:"goodsName"`
+		//商品类型
+		GoodsType int32 `json:"goodsType"`
+		//商品状态
+		Status int32 `json:"status"`
+		//商品描述
+		Description *string `json:"description,omitempty"`
+		//商品规格列表
+		Specification []*SpecificationAddList `json:"specification"`
+	}
+	GoodsAddResp  {}
+)
+
+//删除商品
+type (
+	GoodsDelReq {
+		GoodsId int32 `json:"goodsId"`
+	}
+	GoodsDelResp  {}
+)
+
+//获取商品列表
+type (
+	GoodsListReq {
+		//商品状态
+		Status int32 `json:"status,omitempty"`
+		//商品类型ID
+		GoodsTypeId *int32 `json:"goodsTypeId,omitempty"`
+		//商铺ID
+		MerchantId *int32 `json:"merchantId,omitempty"`
+		//商品名称
+		GoodsName *string `json:"goodsName,omitempty"`
+		//商品ID
+		GoodsID *int32 `json:"goodsId,omitempty"`
+		//页码
+		Page int32 `json:"page"`
+		//条数
+		Limit int32 `json:"limit"`
+	}
+	GoodsListResp {
+		//数据总条数
+		Count int32 `json:"count"`
+		//条数
+		Limit int32 `json:"limit"`
+		//总页数
+		Number int32 `json:"number"`
+		//当前页码
+		Page int32 `json:"page"`
+		//商品列表数据
+		List []*GoodsList `json:"list"`
+	}
+)
+
+//获取商品类型列表
+type (
+	GoodsTypeListReq  {}
+	GoodsTypeListResp {
+		//数据总条数
+		Count int32 `json:"count"`
+		//规格列表
+		List []*GoodsTypeList `json:"list"`
+	}
+)
+
+//更新商品信息
+type (
+	GoodsUpDateReq {
+		//商品Id
+		GoodsId int32 `json:"goodsId"`
+		//商品名称
+		GoodsName *string `json:"goodsName,omitempty"`
+		//商品类型Id
+		GoodsTypeId *int32 `json:"goodsTypeId,omitempty"`
+		//商品状态
+		Status int32 `json:"status"`
+		//商品描述
+		Description *string `json:"description,omitempty`
+		//规格列表
+		List []*SpecificationList `json:"specification,omitempty"`
+	}
+	GoodsUpDateResp  {}
+)
+
+@server (
+	prefix: /api/goods
+	jwt:    Auth
+	//jwt鉴权
+	middleware: JwtAuthentication
+)
+service goods-api {
+	//添加商品
+	@handler GoodsAdd
+	post /goodsAddr (GoodsAddReq) returns (GoodsAddResp)
+
+	//删除商品
+	@handler GoodsDel
+	post /goodsDel (GoodsDelReq) returns (GoodsDelResp)
+
+	//获取商品列表
+	@handler GoodsList
+	post /goodsList (GoodsListReq) returns (GoodsListResp)
+
+	//获取商品类型列表
+	@handler GoodsTypeList
+	post /goodsTypeList (GoodsTypeListReq) returns (GoodsTypeListResp)
+
+	//更新商品
+	@handler GoodsUpdate
+	post /goodsUpdate (GoodsUpDateReq) returns (GoodsUpDateResp)
+}
+
