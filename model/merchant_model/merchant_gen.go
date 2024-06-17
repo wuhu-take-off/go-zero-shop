@@ -25,6 +25,7 @@ var (
 	MerchantInfosSqlFieldMap = map[string]string{
 		"merchant_name": "name",
 	}
+	MerchantInfosSqlOmitField = []string{"MerchantId", "UpdateTime", "DeleteTime"}
 )
 
 type (
@@ -35,6 +36,7 @@ type (
 		ConfirmUserRole(userId int32, merchantId int32) bool
 		DelMerchantInfos(merchantId int32) error
 		FindMerchantIdList(userId int32) []int32
+		AddMerchant(userId int32, merchantName string, merchantStatus int32, linkname string, phone []byte) error
 	}
 	defaultMerchantInfosModel struct {
 		DB *gorm.DB
@@ -187,4 +189,14 @@ func (m defaultMerchantInfosModel) FindMerchantIdList(userId int32) []int32 {
 	var merchantId []int32
 	m.DB.Model(&MerchantInfos{}).Select("merchant_id").Where("user_id = ? AND delete_time IS NULL", userId).Find(&merchantId)
 	return merchantId
+}
+func (m *defaultMerchantInfosModel) AddMerchant(userId int32, merchantName string, merchantStatus int32, linkname string, phone []byte) error {
+	merchant := &MerchantInfos{
+		UserId:   userId,
+		Status:   merchantStatus,
+		Name:     merchantName,
+		Linkname: linkname,
+		Phone:    phone,
+	}
+	return m.DB.Omit(MerchantInfosSqlOmitField...).Create(merchant).Error
 }

@@ -411,7 +411,7 @@ message AddMerchantReq{
   string phone = 6;
 }
 message AddMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 
 //更新商铺请求
@@ -444,5 +444,6 @@ service MerchantServe{
   rpc MerchantList (MerchantListReq) returns (MerchantListResp);
   rpc UpdateMerchant (UpdateMerchantReq) returns (UpdateMerchantResp);
   rpc DelMerchant (DelMerchantReq) returns (DelMerchantResp);
+  rpc AddMerchant (AddMerchantReq)returns (AddMerchantResp);
 }
 // goctl rpc protoc shop.proto --go_out=. --go-grpc_out=. --zrpc_out=. -m

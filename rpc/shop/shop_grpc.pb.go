@@ -831,6 +831,7 @@ const (
 	MerchantServe_MerchantList_FullMethodName   = "/shop.MerchantServe/MerchantList"
 	MerchantServe_UpdateMerchant_FullMethodName = "/shop.MerchantServe/UpdateMerchant"
 	MerchantServe_DelMerchant_FullMethodName    = "/shop.MerchantServe/DelMerchant"
+	MerchantServe_AddMerchant_FullMethodName    = "/shop.MerchantServe/AddMerchant"
 )
 
 // MerchantServeClient is the client API for MerchantServe service.
@@ -840,6 +841,7 @@ type MerchantServeClient interface {
 	MerchantList(ctx context.Context, in *MerchantListReq, opts ...grpc.CallOption) (*MerchantListResp, error)
 	UpdateMerchant(ctx context.Context, in *UpdateMerchantReq, opts ...grpc.CallOption) (*UpdateMerchantResp, error)
 	DelMerchant(ctx context.Context, in *DelMerchantReq, opts ...grpc.CallOption) (*DelMerchantResp, error)
+	AddMerchant(ctx context.Context, in *AddMerchantReq, opts ...grpc.CallOption) (*AddMerchantResp, error)
 }
 
 type merchantServeClient struct {
@@ -877,6 +879,15 @@ func (c *merchantServeClient) DelMerchant(ctx context.Context, in *DelMerchantRe
 	return out, nil
 }
 
+func (c *merchantServeClient) AddMerchant(ctx context.Context, in *AddMerchantReq, opts ...grpc.CallOption) (*AddMerchantResp, error) {
+	out := new(AddMerchantResp)
+	err := c.cc.Invoke(ctx, MerchantServe_AddMerchant_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MerchantServeServer is the server API for MerchantServe service.
 // All implementations must embed UnimplementedMerchantServeServer
 // for forward compatibility
@@ -884,6 +895,7 @@ type MerchantServeServer interface {
 	MerchantList(context.Context, *MerchantListReq) (*MerchantListResp, error)
 	UpdateMerchant(context.Context, *UpdateMerchantReq) (*UpdateMerchantResp, error)
 	DelMerchant(context.Context, *DelMerchantReq) (*DelMerchantResp, error)
+	AddMerchant(context.Context, *AddMerchantReq) (*AddMerchantResp, error)
 	mustEmbedUnimplementedMerchantServeServer()
 }
 
@@ -899,6 +911,9 @@ func (UnimplementedMerchantServeServer) UpdateMerchant(context.Context, *UpdateM
 }
 func (UnimplementedMerchantServeServer) DelMerchant(context.Context, *DelMerchantReq) (*DelMerchantResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelMerchant not implemented")
+}
+func (UnimplementedMerchantServeServer) AddMerchant(context.Context, *AddMerchantReq) (*AddMerchantResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMerchant not implemented")
 }
 func (UnimplementedMerchantServeServer) mustEmbedUnimplementedMerchantServeServer() {}
 
@@ -967,6 +982,24 @@ func _MerchantServe_DelMerchant_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MerchantServe_AddMerchant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMerchantReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantServeServer).AddMerchant(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantServe_AddMerchant_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantServeServer).AddMerchant(ctx, req.(*AddMerchantReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MerchantServe_ServiceDesc is the grpc.ServiceDesc for MerchantServe service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -985,6 +1018,10 @@ var MerchantServe_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DelMerchant",
 			Handler:    _MerchantServe_DelMerchant_Handler,
+		},
+		{
+			MethodName: "AddMerchant",
+			Handler:    _MerchantServe_AddMerchant_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
