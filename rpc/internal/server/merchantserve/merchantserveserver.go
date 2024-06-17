@@ -36,3 +36,8 @@ func (s *MerchantServeServer) DelMerchant(ctx context.Context, in *shop.DelMerch
 	l := merchantservelogic.NewDelMerchantLogic(ctx, s.svcCtx)
 	return l.DelMerchant(in)
 }
+
+func (s *MerchantServeServer) AddMerchant(ctx context.Context, in *shop.AddMerchantReq) (*shop.AddMerchantResp, error) {
+	l := merchantservelogic.NewAddMerchantLogic(ctx, s.svcCtx)
+	return l.AddMerchant(in)
+}

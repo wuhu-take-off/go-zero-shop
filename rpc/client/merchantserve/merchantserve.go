@@ -62,6 +62,7 @@ type (
 		MerchantList(ctx context.Context, in *MerchantListReq, opts ...grpc.CallOption) (*MerchantListResp, error)
 		UpdateMerchant(ctx context.Context, in *UpdateMerchantReq, opts ...grpc.CallOption) (*UpdateMerchantResp, error)
 		DelMerchant(ctx context.Context, in *DelMerchantReq, opts ...grpc.CallOption) (*DelMerchantResp, error)
+		AddMerchant(ctx context.Context, in *AddMerchantReq, opts ...grpc.CallOption) (*AddMerchantResp, error)
 	}
 
 	defaultMerchantServe struct {
@@ -88,4 +89,9 @@ func (m *defaultMerchantServe) UpdateMerchant(ctx context.Context, in *UpdateMer
 func (m *defaultMerchantServe) DelMerchant(ctx context.Context, in *DelMerchantReq, opts ...grpc.CallOption) (*DelMerchantResp, error) {
 	client := shop.NewMerchantServeClient(m.cli.Conn())
 	return client.DelMerchant(ctx, in, opts...)
+}
+
+func (m *defaultMerchantServe) AddMerchant(ctx context.Context, in *AddMerchantReq, opts ...grpc.CallOption) (*AddMerchantResp, error) {
+	client := shop.NewMerchantServeClient(m.cli.Conn())
+	return client.AddMerchant(ctx, in, opts...)
 }
