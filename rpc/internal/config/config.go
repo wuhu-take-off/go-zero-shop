@@ -14,4 +14,11 @@ type Config struct {
 	AES struct {
 		Key string
 	}
+	SFTP struct {
+		Host       string
+		Port       int
+		User       string
+		Password   string
+		ServerPath string
+	}
 }
