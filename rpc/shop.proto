@@ -122,6 +122,7 @@ message GoodsUpdateResp{
 message GoodsDelReq{
   int32 goods_id = 1;
 }
+
 message GoodsDelResp{
   bool OK = 1;
 }

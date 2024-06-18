@@ -11,21 +11,18 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuthentication},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/orderList",
-					Handler: OrderListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/updateCourienNumber",
-					Handler: UpdateCourienNumberHandler(serverCtx),
-				},
-			}...,
-		),
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/orderList",
+				Handler: OrderListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/updateCourienNumber",
+				Handler: UpdateCourienNumberHandler(serverCtx),
+			},
+		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/order"),
 	)
