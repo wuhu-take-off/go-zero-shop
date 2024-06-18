@@ -1,10 +1,9 @@
 package functionservelogic
 
 import (
-	"context"
-
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +23,7 @@ func NewUploadImgLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadI
 }
 
 func (l *UploadImgLogic) UploadImg(in *shop.UploadImgReq) (*shop.UploadImgResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &shop.UploadImgResp{}, nil
+	return &shop.UploadImgResp{
+		Url: "url",
+	}, nil
 }

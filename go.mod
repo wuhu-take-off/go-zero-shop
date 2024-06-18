@@ -3,9 +3,13 @@ module TongChi_shop
 go 1.21.6
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
+	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/pkg/sftp v1.13.6
 	github.com/redis/go-redis/v9 v9.4.0
 	github.com/willf/bloom v2.0.3+incompatible
 	github.com/zeromicro/go-zero v1.6.5
+	golang.org/x/crypto v0.23.0
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
@@ -42,6 +46,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/kr/fs v0.1.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

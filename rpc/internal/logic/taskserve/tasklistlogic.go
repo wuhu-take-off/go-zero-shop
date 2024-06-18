@@ -1,10 +1,12 @@
 package taskservelogic
 
 import (
-	"context"
-
+	"TongChi_shop/model/user_model"
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
+	"TongChi_shop/tool/raw_field"
+	"context"
+	"strings"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +27,19 @@ func NewTaskListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TaskList
 
 // 获取任务列表
 func (l *TaskListLogic) TaskList(in *shop.TaskListReq) (*shop.TaskListResp, error) {
-	// todo: add your logic here and delete this line
+	sql, val := raw_field.UpdateFieldMap(in, user_model.UserTaskSqlFileMap)
+	userInfosModel := user_model.NewUserInfosModel(l.svcCtx.DB)
+	count, tasks := userInfosModel.FindUserTask(in.UserId, in.Page, in.Limit, strings.Join(sql, " AND "), val...)
+	var taskList []*shop.TaskList
+	for i := 0; i < len(tasks); i++ {
+		taskList = append(taskList, tasks[i].ToTaskListResp())
+	}
 
-	return &shop.TaskListResp{}, nil
+	return &shop.TaskListResp{
+		TaskList: taskList,
+		Count:    count,
+		Limit:    in.Limit,
+		Number:   (count + in.Limit + 1) / in.Limit,
+		Page:     in.Page,
+	}, nil
 }
