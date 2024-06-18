@@ -128,8 +128,6 @@ type (
 @server (
 	prefix: /api/goods
 	jwt:    Auth
-	//jwt鉴权
-	middleware: JwtAuthentication
 )
 service goods-api {
 	//添加商品

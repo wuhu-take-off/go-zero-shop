@@ -71,8 +71,6 @@ type (
 @server (
 	prefix: /api/task
 	jwt:    Auth
-	//jwt鉴权
-	middleware: JwtAuthentication
 )
 service task-api {
 	//获取任务列表

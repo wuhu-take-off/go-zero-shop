@@ -81,8 +81,6 @@ type (
 @server (
 	prefix: /api/merchat
 	jwt:    Auth
-	//jwt鉴权
-	middleware: JwtAuthentication
 )
 service merchant-api {
 	//添加商铺

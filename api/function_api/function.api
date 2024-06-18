@@ -56,8 +56,6 @@ service function-api {
 @server (
 	prefix: /api/function
 	jwt:    Auth
-	//jwt鉴权
-	middleware: JwtAuthentication
 )
 service function-api {
 	//上传图片

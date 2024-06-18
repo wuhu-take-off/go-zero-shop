@@ -68,8 +68,6 @@ type (
 @server (
 	prefix: /api/order
 	jwt:    Auth
-	//jwt鉴权
-	middleware: JwtAuthentication
 )
 service order-api {
 	//获取商品列表

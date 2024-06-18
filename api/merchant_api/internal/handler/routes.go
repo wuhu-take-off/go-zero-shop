@@ -11,31 +11,28 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuthentication},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/MerchantAdd",
-					Handler: MerchantAddHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/MerchantUpdate",
-					Handler: MerchantUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/merchantDel",
-					Handler: MerchantDelHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/merchantList",
-					Handler: MerchantListHandler(serverCtx),
-				},
-			}...,
-		),
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/MerchantAdd",
+				Handler: MerchantAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/MerchantUpdate",
+				Handler: MerchantUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/merchantDel",
+				Handler: MerchantDelHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/merchantList",
+				Handler: MerchantListHandler(serverCtx),
+			},
+		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/merchat"),
 	)

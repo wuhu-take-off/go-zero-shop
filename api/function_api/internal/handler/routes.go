@@ -22,26 +22,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuthentication},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/loadImg",
-					Handler: LoadimgHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/newToken",
-					Handler: NewTokenHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/uploadImg",
-					Handler: UploadImgHandler(serverCtx),
-				},
-			}...,
-		),
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/loadImg",
+				Handler: LoadimgHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/newToken",
+				Handler: NewTokenHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/uploadImg",
+				Handler: UploadImgHandler(serverCtx),
+			},
+		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/function"),
 	)

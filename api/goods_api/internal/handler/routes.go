@@ -11,36 +11,33 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuthentication},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/goodsAddr",
-					Handler: GoodsAddHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/goodsDel",
-					Handler: GoodsDelHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/goodsList",
-					Handler: GoodsListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/goodsTypeList",
-					Handler: GoodsTypeListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/goodsUpdate",
-					Handler: GoodsUpdateHandler(serverCtx),
-				},
-			}...,
-		),
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/goodsAddr",
+				Handler: GoodsAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/goodsDel",
+				Handler: GoodsDelHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/goodsList",
+				Handler: GoodsListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/goodsTypeList",
+				Handler: GoodsTypeListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/goodsUpdate",
+				Handler: GoodsUpdateHandler(serverCtx),
+			},
+		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/api/goods"),
 	)
