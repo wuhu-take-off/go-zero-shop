@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	Password  = "cldhjlxvduxdbihc"
+	Password  = "7Ax4Gm4azri6sCpZ"
 	Subject   = "验证码"
-	SendEmail = "368809634@qq.com"
+	SendEmail = "liguohui@tenchii.com"
 	prefix    = "【tongchi_mall】验证码:"
 	suffix    = "用于邮箱身份验证，5分钟内有效，请勿泄露和转发。如非本人操作，请忽略此短信。"
 )
@@ -35,7 +35,7 @@ func Send(from, Password, to, Subject, text string) {
 	//m.Attach("./myIpPic.png")
 
 	//拿到token，并进行连接,第4个参数是填授权码
-	d := gomail.NewDialer("smtp.qq.com", 587, SendEmail, Password)
+	d := gomail.NewDialer("smtp.exmail.qq.com", 465, SendEmail, Password)
 
 	// 发送邮件
 	if err := d.DialAndSend(m); err != nil {
