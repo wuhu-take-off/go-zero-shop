@@ -6,7 +6,7 @@ type Img struct {
 }
 
 type LoadImgReq struct {
-	GoodsId int32 `json:"goodsId"`
+	GoodsId int32 `json:"goods_id"`
 }
 
 type LoadImgResp struct {
@@ -18,8 +18,8 @@ type NewTokenReq struct {
 
 type NewTokenResp struct {
 	Token          string `json:"token"`
-	ExpirationTime int64  `json:"expirationTime"`
-	RefreshTime    int64  `json:"refreshTime"`
+	ExpirationTime int64  `json:"expiration_time"`
+	RefreshTime    int64  `json:"refresh_time"`
 }
 
 type SendAuthReq struct {
@@ -31,7 +31,7 @@ type SendAuthResp struct {
 }
 
 type UploadImgReq struct {
-	GoodsId int32 `form:"goodsId"`
+	GoodsId int32 `form:"goods_id"`
 }
 
 type UploadImgResp struct {

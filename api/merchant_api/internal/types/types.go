@@ -2,36 +2,36 @@
 package types
 
 type MerchantAddReq struct {
-	MerchantName   string `json:"merchantName"`
-	MerchantStatus int32  `json:"merchantStatus"`
-	Linkname       string `json:"linkname"`
-	Phone          string `json:"phone"`
+	MerchantName   string `json:"merchant_name"`   // 商铺名称
+	MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+	Linkname       string `json:"linkname"`        // 联系人
+	Phone          string `json:"phone"`           // 联系方式
 }
 
 type MerchantAddResp struct {
 }
 
 type MerchantDelReq struct {
-	MerchantId int32 `json:"merchantId"`
+	MerchantId int32 `json:"merchant_id"`
 }
 
 type MerchantDelResp struct {
 }
 
 type MerchantList struct {
-	MerchantNme    string `json:"merchantNme"`
-	MerchantId     int32  `json:"merchantId"`
-	MerchantStatus int32  `json:"merchantStatus"`
-	Linkname       string `json:"linkname"`
-	Role           int32  `json:"role"`
+	MerchantName   string `json:"merchant_name"`   // 商铺名称
+	MerchantId     int32  `json:"merchant_id"`     // 商铺Id
+	MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+	Linkname       string `json:"linkname"`        // 联系人
+	Role           int32  `json:"role"`            // 角色
 }
 
 type MerchantListReq struct {
-	MerchantStatus *int32  `json:"merchantStatus,omitempty"`
-	MerchantName   *string `json:"merchantName,omitempty"`
-	MerchantId     *int32  `json:"merchantId,omitempty"`
-	Page           int32   `json:"page"`
-	Limit          int32   `json:"limit"`
+	MerchantStatus *int32  `json:"merchant_status,optional"` // 商铺状态
+	MerchantName   *string `json:"merchant_name,optional"`   // 商铺名称
+	MerchantId     *int32  `json:"merchant_id,optional"`     // 商铺ID
+	Page           int32   `json:"page"`                     // 页码
+	Limit          int32   `json:"limit"`                    // 条数
 }
 
 type MerchantListResp struct {
@@ -43,11 +43,11 @@ type MerchantListResp struct {
 }
 
 type MerchantUpDateReq struct {
-	MerchantId     int32   `json:"merchantId"`
-	MerchantName   *string `json:"merchantName,,omitempty"`
-	MerchantStatus *int32  `json:"merchantStatus,omitempty"`
-	Linkname       *string `json:"linkname,omitempty"`
-	Phone          *string `json:"phone,omitempty"`
+	MerchantId     int32  `json:"merchant_id"`     // 商铺Id
+	MerchantName   string `json:"merchant_name"`   // 商铺名称
+	MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+	Linkname       string `json:"linkname"`        // 联系人
+	Phone          string `json:"phone"`           // 联系方式
 }
 
 type MerchantUpDateResp struct {

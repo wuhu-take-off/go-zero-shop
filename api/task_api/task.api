@@ -1,51 +1,34 @@
 type (
 	TaskList {
-		//任务ID
-		TaskId int32 `json:"taskId"`
-		//任务名称
-		TaksName string `json:"taksName"`
-		//任务类型ID
-		TaskTypeId int32 `json:"taskTypeId"`
-		//任务状态
-		Status int32 `json:"status"`
-		//任务描述
-		Description string `json:"description"`
-		//任务分数
-		Score int32 `json:"score"`
+		TaskId      int32  `json:"task_id"` // 任务ID
+		TaskName    string `json:"task_name"` // 任务名称
+		TaskTypeId  int32  `json:"task_type_id"` // 任务类型ID
+		Status      int32  `json:"status"` // 任务状态
+		Description string `json:"description"` // 任务描述
+		Score       int32  `json:"score"` // 任务分数
 	}
 	TaskTypeList {
-		TaskTypeId   int32  `json:"taskTypeId"`
-		TaskTypeName string `json:"taskTypeName"`
+		TaskTypeId   int32  `json:"task_type_id"` // 任务类型ID
+		TaskTypeName string `json:"task_type_name"` // 任务类型名称
 	}
 )
 
 //任务列表
 type (
 	TaskListReq {
-		//任务状态
-		Status *int32 `json:"status,omitempty"`
-		//任务类型
-		TaskTypeId *int32 `json:"taskTypeId,omitempty"`
-		//任务名称
-		TaskName *string `json:"taskName,omitempty"`
-		//任务Id
-		TaskId *int32 `json:"taskId,omitempty"`
-		//页码
-		Page int32 `json:"page"`
-		//条数
-		Limit int32 `json:"limit"`
+		Status     *int32  `json:"status,optional"` // 任务状态
+		TaskTypeId *int32  `json:"task_type_id,optional"` // 任务类型
+		TaskName   *string `json:"task_name,optional"` // 任务名称
+		TaskId     *int32  `json:"task_id,optional"` // 任务ID
+		Page       int32   `json:"page"` // 页码
+		Limit      int32   `json:"limit"` // 条数
 	}
 	TaskListResp {
-		//数据总条数
-		Count int32 `json:"count"`
-		//条数
-		Limit int32 `json:"limit"`
-		//总页数
-		Number int32 `json:"number"`
-		//当前页码
-		Page int32 `json:"page"`
-		//任务数据列表
-		List []*TaskList `json:"list"`
+		Count  int32       `json:"count"` // 数据总条数
+		Limit  int32       `json:"limit"` // 条数
+		Number int32       `json:"number"` // 总页数
+		Page   int32       `json:"page"` // 当前页码
+		List   []*TaskList `json:"list"` // 任务数据列表
 	}
 )
 
@@ -62,7 +45,7 @@ type (
 //更新任务信息
 type (
 	UpDateTaskReq {
-		TaskId int32 `json:"taskId"`
+		TaskId int32 `json:"task_id"`
 		Score  int32 `json:"score"`
 	}
 	UpDateTaskResp  {}

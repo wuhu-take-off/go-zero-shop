@@ -2,34 +2,34 @@
 package types
 
 type TaskList struct {
-	TaskId      int32  `json:"taskId"`
-	TaksName    string `json:"taksName"`
-	TaskTypeId  int32  `json:"taskTypeId"`
-	Status      int32  `json:"status"`
-	Description string `json:"description"`
-	Score       int32  `json:"score"`
+	TaskId      int32  `json:"task_id"`      // 任务ID
+	TaskName    string `json:"task_name"`    // 任务名称
+	TaskTypeId  int32  `json:"task_type_id"` // 任务类型ID
+	Status      int32  `json:"status"`       // 任务状态
+	Description string `json:"description"`  // 任务描述
+	Score       int32  `json:"score"`        // 任务分数
 }
 
 type TaskListReq struct {
-	Status     *int32  `json:"status,omitempty"`
-	TaskTypeId *int32  `json:"taskTypeId,omitempty"`
-	TaskName   *string `json:"taskName,omitempty"`
-	TaskId     *int32  `json:"taskId,omitempty"`
-	Page       int32   `json:"page"`
-	Limit      int32   `json:"limit"`
+	Status     *int32  `json:"status,optional"`       // 任务状态
+	TaskTypeId *int32  `json:"task_type_id,optional"` // 任务类型
+	TaskName   *string `json:"task_name,optional"`    // 任务名称
+	TaskId     *int32  `json:"task_id,optional"`      // 任务ID
+	Page       int32   `json:"page"`                  // 页码
+	Limit      int32   `json:"limit"`                 // 条数
 }
 
 type TaskListResp struct {
-	Count  int32       `json:"count"`
-	Limit  int32       `json:"limit"`
-	Number int32       `json:"number"`
-	Page   int32       `json:"page"`
-	List   []*TaskList `json:"list"`
+	Count  int32       `json:"count"`  // 数据总条数
+	Limit  int32       `json:"limit"`  // 条数
+	Number int32       `json:"number"` // 总页数
+	Page   int32       `json:"page"`   // 当前页码
+	List   []*TaskList `json:"list"`   // 任务数据列表
 }
 
 type TaskTypeList struct {
-	TaskTypeId   int32  `json:"taskTypeId"`
-	TaskTypeName string `json:"taskTypeName"`
+	TaskTypeId   int32  `json:"task_type_id"`   // 任务类型ID
+	TaskTypeName string `json:"task_type_name"` // 任务类型名称
 }
 
 type TaskTypeListReq struct {
@@ -41,7 +41,7 @@ type TaskTypeListResp struct {
 }
 
 type UpDateTaskReq struct {
-	TaskId int32 `json:"taskId"`
+	TaskId int32 `json:"task_id"`
 	Score  int32 `json:"score"`
 }
 

@@ -10,22 +10,22 @@ type (
 	}
 	//规格列表
 	SpecificationList {
-		SpecificationId  int32  `json:"specificationId"`
+		SpecificationId  int32  `json:"specification_id"`
 		Size             string `json:"size"`
-		DisplayInventory int32  `json:"displayInventory"`
-		RealInventory    int32  `json:"realInventory"`
+		DisplayInventory int32  `json:"display_inventory"`
+		RealInventory    int32  `json:"real_inventory"`
 		Score            int32  `json:"score"`
 	}
 	//商品列表
 	GoodsList {
 		//商铺名称
-		MerchantName string `json:"merchantName"`
+		MerchantName string `json:"merchant_name"`
 		//商品Id
-		GoodsId int32 `json:"goodsId"`
+		GoodsId int32 `json:"goods_id"`
 		//商品名称
-		GoodsName string `json:"goodsName"`
+		GoodsName string `json:"goods_name"`
 		//商品类型ID
-		GoodsTypeId int32 `json:"goodsTypeId"`
+		GoodsTypeId int32 `json:"goods_type_id"`
 		//商品状态
 		Status int32 `json:"status"`
 		//规格列表
@@ -33,8 +33,8 @@ type (
 	}
 	//商品类型列表
 	GoodsTypeList {
-		GoodsTypeId   int32  `json:"goodsTypeId"`
-		GoodsTypeName string `json:"goodsTypeName"`
+		GoodsTypeId   int32  `json:"goods_type_id"`
+		GoodsTypeName string `json:"goods_type_name"`
 	}
 )
 
@@ -42,13 +42,13 @@ type (
 type (
 	GoodsAddReq {
 		//商品名称
-		GoodsName string `json:"goodsName"`
+		GoodsName string `json:"goods_name"`
 		//商品类型
-		GoodsType int32 `json:"goodsType"`
+		GoodsType int32 `json:"goods_type"`
 		//商品状态
 		Status int32 `json:"status"`
 		//商品描述
-		Description *string `json:"description,omitempty"`
+		Description *string `json:"description,optional"`
 		//商品规格列表
 		Specification []*SpecificationAddList `json:"specification"`
 	}
@@ -58,7 +58,7 @@ type (
 //删除商品
 type (
 	GoodsDelReq {
-		GoodsId int32 `json:"goodsId"`
+		GoodsId int32 `json:"goods_id"`
 	}
 	GoodsDelResp  {}
 )
@@ -69,13 +69,13 @@ type (
 		//商品状态
 		Status int32 `json:"status,omitempty"`
 		//商品类型ID
-		GoodsTypeId *int32 `json:"goodsTypeId,omitempty"`
+		GoodsTypeId *int32 `json:"goods_type_id,optional"`
 		//商铺ID
-		MerchantId *int32 `json:"merchantId,omitempty"`
+		MerchantId *int32 `json:"merchant_id,optional"`
 		//商品名称
-		GoodsName *string `json:"goodsName,omitempty"`
+		GoodsName *string `json:"goods_name,optional"`
 		//商品ID
-		GoodsID *int32 `json:"goodsId,omitempty"`
+		GoodsID *int32 `json:"goods_id,optional"`
 		//页码
 		Page int32 `json:"page"`
 		//条数
@@ -110,17 +110,17 @@ type (
 type (
 	GoodsUpDateReq {
 		//商品Id
-		GoodsId int32 `json:"goodsId"`
+		GoodsId int32 `json:"goods_id"`
 		//商品名称
-		GoodsName *string `json:"goodsName,omitempty"`
+		GoodsName *string `json:"goods_name,optional"`
 		//商品类型Id
-		GoodsTypeId *int32 `json:"goodsTypeId,omitempty"`
+		GoodsTypeId *int32 `json:"goods_type_id,optional"`
 		//商品状态
 		Status int32 `json:"status"`
 		//商品描述
-		Description *string `json:"description,omitempty`
+		Description *string `json:"description,optional`
 		//规格列表
-		List []*SpecificationList `json:"specification,omitempty"`
+		List []*SpecificationList `json:"specification,optional"`
 	}
 	GoodsUpDateResp  {}
 )
