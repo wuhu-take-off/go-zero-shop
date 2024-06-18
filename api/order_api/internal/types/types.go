@@ -2,26 +2,26 @@
 package types
 
 type OrderList struct {
-	CreateTime        int64   `json:"createTime"`
-	OrderId           int32   `json:"orderId"`
-	GoodsName         string  `json:"goodsName"`
-	SpecificationSize string  `json:"specificationSize"`
-	OrderNum          int32   `json:"orderNum"`
-	RecipientName     string  `json:"recipientName"`
-	Phone             string  `json:"phone"`
-	Address           string  `json:"address"`
-	Score             int32   `json:"score"`
-	CourierNumber     *string `json:"courierNumber,omitempty"`
+	CreateTime        int64   `json:"create_time"`             // 下单时间
+	OrderId           int32   `json:"order_id"`                // 订单号
+	GoodsName         string  `json:"goods_name"`              // 商品名称
+	SpecificationSize string  `json:"specification_size"`      // 规格大小
+	OrderNum          int32   `json:"order_num"`               // 下单数量
+	RecipientName     string  `json:"recipient_name"`          // 收件人
+	Phone             string  `json:"phone"`                   // 联系方式
+	Address           string  `json:"address"`                 // 收件地址
+	Score             int32   `json:"score"`                   // 消耗积分/每件
+	CourierNumber     *string `json:"courier_number,optional"` // 快递单号
 }
 
 type OrderListReq struct {
-	RecipientName  *string `json:"recipientName,omitempty"`
-	RecipientPhone *string `json:"recipientPhone,omitempty"`
-	OrderTime      *int64  `json:"orderTime,omitempty"`
-	GoodsName      *string `json:"goodsName,omitempty"`
-	OrderId        *int32  `json:"orderId,omitempty"`
-	Page           int32   `json:"page"`
-	Limit          int32   `json:"limit"`
+	RecipientName  *string `json:"recipient_name,optional"`  // 收件人名称
+	RecipientPhone *string `json:"recipient_phone,optional"` // 联系人
+	OrderTime      *int64  `json:"order_time,optional"`      // 下单时间
+	GoodsName      *string `json:"goods_name,optional"`      // 商品名称
+	OrderId        *int32  `json:"order_id,optional"`        // 订单Id
+	Page           int32   `json:"page"`                     // 页码
+	Limit          int32   `json:"limit"`                    // 条数
 }
 
 type OrderListResp struct {
@@ -34,7 +34,7 @@ type OrderListResp struct {
 
 type UpdateCourierNumberReq struct {
 	OrderId       int32  `json:"orderId"`
-	CourierNumber string `json:"courierNumber"`
+	CourierNumber string `json:"courier_number"` //快递单号
 }
 
 type UpdateCourierNumberResp struct {

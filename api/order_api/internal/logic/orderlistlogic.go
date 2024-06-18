@@ -26,5 +26,11 @@ func NewOrderListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrderLi
 func (l *OrderListLogic) OrderList(req *types.OrderListReq) (resp *types.OrderListResp, err error) {
 	// todo: add your logic here and delete this line
 
-	return
+	return &types.OrderListResp{
+		Count:  10,
+		Limit:  20,
+		Number: 390,
+		Page:   34,
+		List:   nil,
+	}, nil
 }

@@ -2,10 +2,10 @@
 package types
 
 type GoodsAddReq struct {
-	GoodsName     string                  `json:"goodsName"`
-	GoodsType     int32                   `json:"goodsType"`
+	GoodsName     string                  `json:"goods_name"`
+	GoodsType     int32                   `json:"goods_type"`
 	Status        int32                   `json:"status"`
-	Description   *string                 `json:"description,omitempty"`
+	Description   *string                 `json:"description,optional"`
 	Specification []*SpecificationAddList `json:"specification"`
 }
 
@@ -13,27 +13,27 @@ type GoodsAddResp struct {
 }
 
 type GoodsDelReq struct {
-	GoodsId int32 `json:"goodsId"`
+	GoodsId int32 `json:"goods_id"`
 }
 
 type GoodsDelResp struct {
 }
 
 type GoodsList struct {
-	MerchantName string               `json:"merchantName"`
-	GoodsId      int32                `json:"goodsId"`
-	GoodsName    string               `json:"goodsName"`
-	GoodsTypeId  int32                `json:"goodsTypeId"`
+	MerchantName string               `json:"merchant_name"`
+	GoodsId      int32                `json:"goods_id"`
+	GoodsName    string               `json:"goods_name"`
+	GoodsTypeId  int32                `json:"goods_type_id"`
 	Status       int32                `json:"status"`
 	List         []*SpecificationList `json:"list"`
 }
 
 type GoodsListReq struct {
 	Status      int32   `json:"status,omitempty"`
-	GoodsTypeId *int32  `json:"goodsTypeId,omitempty"`
-	MerchantId  *int32  `json:"merchantId,omitempty"`
-	GoodsName   *string `json:"goodsName,omitempty"`
-	GoodsID     *int32  `json:"goodsId,omitempty"`
+	GoodsTypeId *int32  `json:"goods_type_id,optional"`
+	MerchantId  *int32  `json:"merchant_id,optional"`
+	GoodsName   *string `json:"goods_name,optional"`
+	GoodsID     *int32  `json:"goods_id,optional"`
 	Page        int32   `json:"page"`
 	Limit       int32   `json:"limit"`
 }
@@ -47,8 +47,8 @@ type GoodsListResp struct {
 }
 
 type GoodsTypeList struct {
-	GoodsTypeId   int32  `json:"goodsTypeId"`
-	GoodsTypeName string `json:"goodsTypeName"`
+	GoodsTypeId   int32  `json:"goods_type_id"`
+	GoodsTypeName string `json:"goods_type_name"`
 }
 
 type GoodsTypeListReq struct {
@@ -60,12 +60,12 @@ type GoodsTypeListResp struct {
 }
 
 type GoodsUpDateReq struct {
-	GoodsId     int32                `json:"goodsId"`
-	GoodsName   *string              `json:"goodsName,omitempty"`
-	GoodsTypeId *int32               `json:"goodsTypeId,omitempty"`
+	GoodsId     int32                `json:"goods_id"`
+	GoodsName   *string              `json:"goods_name,optional"`
+	GoodsTypeId *int32               `json:"goods_type_id,optional"`
 	Status      int32                `json:"status"`
-	Description *string              `json:"description,omitempty`
-	List        []*SpecificationList `json:"specification,omitempty"`
+	Description *string              `json:"description,optional`
+	List        []*SpecificationList `json:"specification,optional"`
 }
 
 type GoodsUpDateResp struct {
@@ -78,9 +78,9 @@ type SpecificationAddList struct {
 }
 
 type SpecificationList struct {
-	SpecificationId  int32  `json:"specificationId"`
+	SpecificationId  int32  `json:"specification_id"`
 	Size             string `json:"size"`
-	DisplayInventory int32  `json:"displayInventory"`
-	RealInventory    int32  `json:"realInventory"`
+	DisplayInventory int32  `json:"display_inventory"`
+	RealInventory    int32  `json:"real_inventory"`
 	Score            int32  `json:"score"`
 }

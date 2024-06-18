@@ -8,6 +8,6 @@ type UserLoginReq struct {
 
 type UserLoginResp struct {
 	Token          string `json:"token"`
-	ExpirationTime int64  `json:"expirationTime"`
-	RefreshTime    int64  `json:"refreshTime"`
+	ExpirationTime int64  `json:"expiration_time"`
+	RefreshTime    int64  `json:"refresh_time"`
 }

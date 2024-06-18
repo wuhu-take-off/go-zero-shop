@@ -1,23 +1,18 @@
 type (
 	//商铺信息
 	MerchantList {
-		//商铺名称
-		MerchantNme string `json:"merchantNme"`
-		//商铺Id
-		MerchantId int32 `json:"merchantId"`
-		//商铺状态
-		MerchantStatus int32 `json:"merchantStatus"`
-		//联系人
-		Linkname string `json:"linkname"`
-		//角色
-		Role int32 `json:"role"`
+		MerchantName   string `json:"merchant_name"` // 商铺名称
+		MerchantId     int32  `json:"merchant_id"` // 商铺Id
+		MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+		Linkname       string `json:"linkname"` // 联系人
+		Role           int32  `json:"role"` // 角色
 	}
 )
 
 //删除商铺
 type (
 	MerchantDelReq {
-		MerchantId int32 `json:"merchantId"`
+		MerchantId int32 `json:"merchant_id"`
 	}
 	MerchantDelResp  {}
 )
@@ -25,16 +20,11 @@ type (
 //获取商铺列表
 type (
 	MerchantListReq {
-		//商铺状态
-		MerchantStatus *int32 `json:"merchantStatus,omitempty"`
-		//商铺名称
-		MerchantName *string `json:"merchantName,omitempty"`
-		//商铺ID
-		MerchantId *int32 `json:"merchantId,omitempty"`
-		//页码
-		Page int32 `json:"page"`
-		//条数
-		Limit int32 `json:"limit"`
+		MerchantStatus *int32  `json:"merchant_status,optional"` // 商铺状态
+		MerchantName   *string `json:"merchant_name,optional"` // 商铺名称
+		MerchantId     *int32  `json:"merchant_id,optional"` // 商铺ID
+		Page           int32   `json:"page"` // 页码
+		Limit          int32   `json:"limit"` // 条数
 	}
 	MerchantListResp {
 		//数据总条数
@@ -53,16 +43,11 @@ type (
 //更新商品信息
 type (
 	MerchantUpDateReq {
-		//商铺Id
-		MerchantId int32 `json:"merchantId"`
-		//商铺名称
-		MerchantName *string `json:"merchantName,,omitempty"`
-		//商铺状态
-		MerchantStatus *int32 `json:"merchantStatus,omitempty"`
-		//联系人
-		Linkname *string `json:"linkname,omitempty"`
-		//联系方式
-		Phone *string `json:"phone,omitempty"`
+		MerchantId     int32  `json:"merchant_id"` // 商铺Id
+		MerchantName   string `json:"merchant_name"` // 商铺名称
+		MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+		Linkname       string `json:"linkname"` // 联系人
+		Phone          string `json:"phone"` // 联系方式
 	}
 	MerchantUpDateResp  {}
 )
@@ -70,10 +55,10 @@ type (
 //添加商铺
 type (
 	MerchantAddReq {
-		MerchantName   string `json:"merchantName"`
-		MerchantStatus int32  `json:"merchantStatus"`
-		Linkname       string `json:"linkname"`
-		Phone          string `json:"phone"`
+		MerchantName   string `json:"merchant_name"` // 商铺名称
+		MerchantStatus int32  `json:"merchant_status"` // 商铺状态
+		Linkname       string `json:"linkname"` // 联系人
+		Phone          string `json:"phone"` // 联系方式
 	}
 	MerchantAddResp  {}
 )

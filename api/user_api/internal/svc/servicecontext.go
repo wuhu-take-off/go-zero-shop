@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"TongChi_shop/api/user_api/internal/config"
+	"TongChi_shop/api/internal/config"
 )
 
 type ServiceContext struct {

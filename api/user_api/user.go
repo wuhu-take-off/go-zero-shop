@@ -1,9 +1,9 @@
-package goods_api
+package user_api
 
 import (
-	"TongChi_shop/api/goods_api/internal/handler"
-	"TongChi_shop/api/goods_api/internal/svc"
 	"TongChi_shop/api/internal/config"
+	"TongChi_shop/api/user_api/internal/handler"
+	"TongChi_shop/api/user_api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )
