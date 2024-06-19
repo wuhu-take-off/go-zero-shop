@@ -25,7 +25,7 @@ func NewLoadimgLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoadimgLo
 }
 
 func (l *LoadimgLogic) Loadimg(req *types.LoadImgReq) (resp *types.LoadImgResp, err error) {
-	img, err := l.svcCtx.ShopRpc.LoadImg(l.ctx, &shop.LoadImgReq{
+	img, err := l.svcCtx.FunctionRpc.LoadImg(l.ctx, &shop.LoadImgReq{
 		GoodsId: req.GoodsId,
 	})
 	if err != nil {

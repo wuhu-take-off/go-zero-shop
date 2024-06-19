@@ -7,13 +7,13 @@ import (
 )
 
 type ServiceContext struct {
-	Config  config.Config
-	ShopRpc functionserve.FunctionServe
+	Config      config.Config
+	FunctionRpc functionserve.FunctionServe
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
-		Config:  c,
-		ShopRpc: functionserve.NewFunctionServe(zrpc.MustNewClient(c.ShopRpc)),
+		Config:      c,
+		FunctionRpc: functionserve.NewFunctionServe(zrpc.MustNewClient(c.ShopRpc)),
 	}
 }

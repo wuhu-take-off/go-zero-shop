@@ -54,6 +54,7 @@ type (
 		FindUsersGoods(userId, page, limit int32, sql string, values ...interface{}) (int32, []UsersGoods)
 		FindUserTask(userId, page, limit int32, sql string, values ...interface{}) (int32, []UserTask)
 		CheckUsersTask(userId, taskId int32) bool
+		SelectUserIdWhereEmail(email string) int32
 	}
 
 	defaultUserInfosModel struct {
@@ -340,4 +341,10 @@ FROM
 `, userTaskSqlFile, sql)
 	m.DB.Raw(sql, values...).Find(&userTask)
 	return userTask
+}
+
+func (m *defaultUserInfosModel) SelectUserIdWhereEmail(email string) int32 {
+	var userId int32
+	m.DB.Model(UserInfos{}).Select("user_id").Where("email = ?", email).Scan(&userId)
+	return userId
 }

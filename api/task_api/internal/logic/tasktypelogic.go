@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
 	"context"
 
 	"TongChi_shop/api/task_api/internal/svc"
@@ -24,7 +25,20 @@ func NewTaskTypeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TaskType
 }
 
 func (l *TaskTypeLogic) TaskType(req *types.TaskTypeListReq) (resp *types.TaskTypeListResp, err error) {
-	// todo: add your logic here and delete this line
 
-	return
+	tasktypeList, err := l.svcCtx.TaskRpc.TaskTypeList(l.ctx, &shop.TaskTypeListReq{})
+	if err != nil {
+		return nil, err
+	}
+	var list []*types.TaskTypeList
+	for _, t := range tasktypeList.TaskTypeList {
+		list = append(list, &types.TaskTypeList{
+			TaskTypeId:   t.TaskTypeId,
+			TaskTypeName: t.TaskTypeName,
+		})
+	}
+	return &types.TaskTypeListResp{
+		Count: tasktypeList.Count,
+		List:  list,
+	}, nil
 }

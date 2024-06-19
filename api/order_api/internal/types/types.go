@@ -3,7 +3,7 @@ package types
 
 type OrderList struct {
 	CreateTime        int64   `json:"create_time"`             // 下单时间
-	OrderId           int32   `json:"order_id"`                // 订单号
+	OrderId           int64   `json:"order_id"`                // 订单号
 	GoodsName         string  `json:"goods_name"`              // 商品名称
 	SpecificationSize string  `json:"specification_size"`      // 规格大小
 	OrderNum          int32   `json:"order_num"`               // 下单数量
@@ -19,7 +19,7 @@ type OrderListReq struct {
 	RecipientPhone *string `json:"recipient_phone,optional"` // 联系人
 	OrderTime      *int64  `json:"order_time,optional"`      // 下单时间
 	GoodsName      *string `json:"goods_name,optional"`      // 商品名称
-	OrderId        *int32  `json:"order_id,optional"`        // 订单Id
+	OrderId        *int64  `json:"order_id,optional"`        // 订单Id
 	Page           int32   `json:"page"`                     // 页码
 	Limit          int32   `json:"limit"`                    // 条数
 }
@@ -33,7 +33,7 @@ type OrderListResp struct {
 }
 
 type UpdateCourierNumberReq struct {
-	OrderId       int32  `json:"orderId"`
+	OrderId       int64  `json:"orderId"`
 	CourierNumber string `json:"courier_number"` //快递单号
 }
 

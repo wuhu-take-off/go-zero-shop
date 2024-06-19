@@ -1,11 +1,10 @@
 package logic
 
 import (
+	json_number_transition "TongChi_shop/tool/json.number_transition"
 	"TongChi_shop/tool/jwt_authentication"
 	"context"
-	"encoding/json"
 	"errors"
-	"strconv"
 	"time"
 
 	"TongChi_shop/api/function_api/internal/svc"
@@ -30,26 +29,13 @@ func NewNewTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *NewToken
 
 func (l *NewTokenLogic) NewToken(req *types.NewTokenReq) (resp *types.NewTokenResp, err error) {
 	value := l.ctx.Value("UserID")
-	var userId int32
-	switch v := value.(type) {
-	case json.Number:
-		if intValue, err := strconv.ParseInt(string(v), 10, 32); err == nil {
-			userId = int32(intValue)
-		} else {
-			//fmt.Println("无法将 json.Number 转换为 int32:", err)
-			return nil, errors.New("非法访问")
-		}
-	default:
-		//fmt.Println("anyValue 不是 json.Number 类型")
-		return nil, errors.New("非法访问")
-	}
+	userId, err := json_number_transition.Transition(value)
 	////验证token
 	//token, ok := l.ctx.Value("token").(string)
 	//if !ok {
 	//	return nil, errors.New("非法访问")
 	//}
 	//res, err := jwt_authentication.ParseJWT(token, []byte(l.svcCtx.Config.Auth.AccessSecret))
-
 	if err != nil {
 		return nil, errors.New("非法访问")
 	}

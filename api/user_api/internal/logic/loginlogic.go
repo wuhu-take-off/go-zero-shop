@@ -1,7 +1,11 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
+	"TongChi_shop/tool/jwt_authentication"
 	"context"
+	"errors"
+	"time"
 
 	"TongChi_shop/api/user_api/internal/svc"
 	"TongChi_shop/api/user_api/internal/types"
@@ -24,7 +28,22 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, err error) {
-	// todo: add your logic here and delete this line
+	login, err := l.svcCtx.UserRpc.UserLogin(l.ctx, &shop.UserLoginReq{
+		Email:     req.Email,
+		EmailAuth: req.Auth,
+	})
+	if err != nil || login.UserId == 0 {
+		return nil, err
+	}
 
-	return
+	//签发token
+	jwt, err := jwt_authentication.GenerateJWT(login.UserId, []byte(l.svcCtx.Config.Auth.AccessSecret), time.Duration(l.svcCtx.Config.Auth.AccessExpire)*time.Second)
+	if err != nil {
+		return nil, errors.New("签发失败")
+	}
+	return &types.UserLoginResp{
+		Token:          jwt,
+		ExpirationTime: l.svcCtx.Config.Auth.AccessExpire,
+		RefreshTime:    l.svcCtx.Config.Auth.AccessExpire / 2,
+	}, nil
 }

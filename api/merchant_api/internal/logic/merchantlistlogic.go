@@ -1,7 +1,10 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
+	json_number_transition "TongChi_shop/tool/json.number_transition"
 	"context"
+	"errors"
 
 	"TongChi_shop/api/merchant_api/internal/svc"
 	"TongChi_shop/api/merchant_api/internal/types"
@@ -24,7 +27,40 @@ func NewMerchantListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Merc
 }
 
 func (l *MerchantListLogic) MerchantList(req *types.MerchantListReq) (resp *types.MerchantListResp, err error) {
-	// todo: add your logic here and delete this line
+	value := l.ctx.Value("UserID")
+	userId, err := json_number_transition.Transition(value)
+	if err != nil {
+		return nil, errors.New("非法访问")
+	}
 
-	return
+	merchantList, err := l.svcCtx.MerchantRpc.MerchantList(l.ctx, &shop.MerchantListReq{
+		UserId:         int32(userId),
+		MerchantStatus: req.MerchantStatus,
+		MerchantName:   req.MerchantName,
+		MerchantId:     req.MerchantId,
+		Page:           req.Page,
+		Limit:          req.Limit,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var list []*types.MerchantList
+	for _, m := range merchantList.MerchantList {
+		list = append(list, &types.MerchantList{
+			MerchantName:   m.MerchantName,
+			MerchantId:     m.MerchantId,
+			MerchantStatus: m.MerchantStatus,
+			Linkname:       m.Linkname,
+			Role:           m.Role,
+		})
+	}
+
+	return &types.MerchantListResp{
+		Count:  merchantList.Count,
+		Limit:  merchantList.Limit,
+		Number: merchantList.Number,
+		Page:   merchantList.Page,
+		List:   list,
+	}, nil
 }
