@@ -26,7 +26,7 @@ func NewSendAuthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendAuth
 }
 
 func (l *SendAuthLogic) SendAuth(req *types.SendAuthReq) (*types.SendAuthResp, error) {
-	resp, err := l.svcCtx.ShopRpc.SendEmailAuth(l.ctx, &shop.SendEmailAuthReq{
+	resp, err := l.svcCtx.FunctionRpc.SendEmailAuth(l.ctx, &shop.SendEmailAuthReq{
 		Email: req.Email,
 	})
 	if err != nil || resp.OK == 0 {

@@ -1,10 +1,10 @@
 package logic
 
 import (
-	"context"
-
 	"TongChi_shop/api/goods_api/internal/svc"
 	"TongChi_shop/api/goods_api/internal/types"
+	"TongChi_shop/rpc/shop"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +24,12 @@ func NewGoodsDelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GoodsDel
 }
 
 func (l *GoodsDelLogic) GoodsDel(req *types.GoodsDelReq) (resp *types.GoodsDelResp, err error) {
-	// todo: add your logic here and delete this line
 
+	res, err := l.svcCtx.GoodsRpc.GoodsDel(l.ctx, &shop.GoodsDelReq{
+		GoodsId: req.GoodsId,
+	})
+	if err != nil || !res.OK {
+		return nil, err
+	}
 	return
 }

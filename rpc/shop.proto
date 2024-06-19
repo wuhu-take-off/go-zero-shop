@@ -11,7 +11,7 @@ message UserLoginReq{
   string email_auth = 2;
 }
 message UserLoginResp{
-  bool OK = 1;
+  int32 user_id = 1;
 }
 
 service UserServe{

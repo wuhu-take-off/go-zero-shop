@@ -43,11 +43,11 @@ type MerchantListResp struct {
 }
 
 type MerchantUpDateReq struct {
-	MerchantId     int32  `json:"merchant_id"`     // 商铺Id
-	MerchantName   string `json:"merchant_name"`   // 商铺名称
-	MerchantStatus int32  `json:"merchant_status"` // 商铺状态
-	Linkname       string `json:"linkname"`        // 联系人
-	Phone          string `json:"phone"`           // 联系方式
+	MerchantId     int32   `json:"merchant_id"`              // 商铺Id
+	MerchantName   *string `json:"merchant_name,optional"`   // 商铺名称
+	MerchantStatus *int32  `json:"merchant_status,optional"` // 商铺状态
+	Linkname       *string `json:"linkname,optional"`        // 联系人
+	Phone          *string `json:"phone,optional"`           // 联系方式
 }
 
 type MerchantUpDateResp struct {

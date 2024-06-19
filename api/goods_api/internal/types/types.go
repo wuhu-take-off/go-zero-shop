@@ -2,10 +2,10 @@
 package types
 
 type GoodsAddReq struct {
-	GoodsName     string                  `json:"goods_name"`
-	GoodsType     int32                   `json:"goods_type"`
-	Status        int32                   `json:"status"`
-	Description   *string                 `json:"description,optional"`
+	GoodsName     string                  `json:"goods_name" maxValue:"20" minValue:"1"`
+	GoodsType     int32                   `json:"goods_type" maxValue:"2147483647" minValue:"1"`
+	Status        int32                   `json:"status" maxValue:"1" minValue:"0"`
+	Description   *string                 `json:"description,optional" maxValue:"100" minValue:"1"`
 	Specification []*SpecificationAddList `json:"specification"`
 }
 
@@ -13,7 +13,7 @@ type GoodsAddResp struct {
 }
 
 type GoodsDelReq struct {
-	GoodsId int32 `json:"goods_id"`
+	GoodsId int32 `json:"goods_id" maxValue:"2147483647" minValue:"1"`
 }
 
 type GoodsDelResp struct {
@@ -29,7 +29,7 @@ type GoodsList struct {
 }
 
 type GoodsListReq struct {
-	Status      int32   `json:"status,omitempty"`
+	Status      *int32  `json:"status,optional"`
 	GoodsTypeId *int32  `json:"goods_type_id,optional"`
 	MerchantId  *int32  `json:"merchant_id,optional"`
 	GoodsName   *string `json:"goods_name,optional"`

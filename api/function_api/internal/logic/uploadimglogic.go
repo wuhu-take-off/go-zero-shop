@@ -37,7 +37,7 @@ func (l *UploadImgLogic) UploadImg(fileDate multipart.File, filename string, req
 	if err != nil {
 		return nil, errors.New("文件提取失败")
 	}
-	res, err := l.svcCtx.ShopRpc.UploadImg(l.ctx, &shop.UploadImgReq{
+	res, err := l.svcCtx.FunctionRpc.UploadImg(l.ctx, &shop.UploadImgReq{
 		Img:     date,
 		ImgName: filename,
 		GoodsId: req.GoodsId,

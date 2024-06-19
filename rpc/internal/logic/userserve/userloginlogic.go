@@ -1,6 +1,7 @@
 package userservelogic
 
 import (
+	"TongChi_shop/model/user_model"
 	"TongChi_shop/tool/db_init"
 	"context"
 	"errors"
@@ -26,11 +27,10 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 }
 
 func (l *UserLoginLogic) UserLogin(in *shop.UserLoginReq) (*shop.UserLoginResp, error) {
-	// todo: add your logic here and delete this line
 	redisConn := db_init.NewRedisConn(l.svcCtx.Config.CacheRedis.Addr, l.svcCtx.Config.CacheRedis.Password)
 	if redisConn.CheckEmailAuth(context.Background(), in.Email, in.EmailAuth) {
 		return &shop.UserLoginResp{
-			OK: true,
+			UserId: user_model.NewUserInfosModel(l.svcCtx.DB).SelectUserIdWhereEmail(in.Email),
 		}, nil
 	}
 	return nil, errors.New("账号或密码错误")

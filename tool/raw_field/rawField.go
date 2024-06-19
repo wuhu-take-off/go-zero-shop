@@ -3,6 +3,7 @@ package raw_field
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -86,4 +87,57 @@ func UpdateFieldMap(in any, change map[string]string) ([]string, []interface{}) 
 
 	//fmt.Println(sql, values)
 	return sql, values
+}
+
+// CheckMaxMin
+// 根据tag中的maxValue和minValue判断数据是否合格,数值类型将会判断值,字符类型将会判断长度
+func CheckMaxMin(in any) bool {
+	v := reflect.ValueOf(in)
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+
+	if v.Kind() != reflect.Struct {
+		panic(fmt.Errorf("ToMap only accepts structs; got %T", v))
+	}
+
+	typ := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+		// gets us a StructField
+		fi := typ.Field(i)
+		maxTmp := fi.Tag.Get("maxValue")
+		minTmp := fi.Tag.Get("minValue")
+		if maxTmp == "" || minTmp == "" {
+			continue
+		}
+
+		maxValue, _ := strconv.ParseInt(maxTmp, 10, 64)
+		minValue, _ := strconv.ParseInt(minTmp, 10, 64)
+		fmt.Println(maxValue, minValue)
+		fieldValue := v.Field(i)
+		if fieldValue.Kind() == reflect.Ptr && fieldValue.IsNil() {
+			continue
+		}
+		if fieldValue.Kind() == reflect.Ptr {
+			fieldValue = fieldValue.Elem()
+		}
+		switch fieldValue.Kind() {
+		case reflect.Int32:
+			val := fieldValue.Interface().(int32)
+			if val < int32(minValue) || val > int32(maxValue) {
+				return false
+			}
+		case reflect.String:
+			val := fieldValue.Interface().(string)
+			if len(val) < int(minValue) || len(val) > int(maxValue) {
+				return false
+			}
+		case reflect.Int64:
+			val := fieldValue.Interface().(int64)
+			if val < minValue || val > maxValue {
+				return false
+			}
+		}
+	}
+	return true
 }

@@ -67,7 +67,7 @@ type (
 type (
 	GoodsListReq {
 		//商品状态
-		Status int32 `json:"status,omitempty"`
+		Status *int32 `json:"status,optional"`
 		//商品类型ID
 		GoodsTypeId *int32 `json:"goods_type_id,optional"`
 		//商铺ID
@@ -132,7 +132,7 @@ type (
 service goods-api {
 	//添加商品
 	@handler GoodsAdd
-	post /goodsAddr (GoodsAddReq) returns (GoodsAddResp)
+	post /goodsAdd (GoodsAddReq) returns (GoodsAddResp)
 
 	//删除商品
 	@handler GoodsDel

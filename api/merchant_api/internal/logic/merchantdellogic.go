@@ -1,7 +1,10 @@
 package logic
 
 import (
+	"TongChi_shop/rpc/shop"
+	json_number_transition "TongChi_shop/tool/json.number_transition"
 	"context"
+	"errors"
 
 	"TongChi_shop/api/merchant_api/internal/svc"
 	"TongChi_shop/api/merchant_api/internal/types"
@@ -24,7 +27,17 @@ func NewMerchantDelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Merch
 }
 
 func (l *MerchantDelLogic) MerchantDel(req *types.MerchantDelReq) error {
-	// todo: add your logic here and delete this line
-
+	value := l.ctx.Value("UserID")
+	userId, err := json_number_transition.Transition(value)
+	if err != nil {
+		return errors.New("非法访问")
+	}
+	merchant, err := l.svcCtx.MerchantRpc.DelMerchant(l.ctx, &shop.DelMerchantReq{
+		UserId:     int32(userId),
+		MerchantId: req.MerchantId,
+	})
+	if err != nil || !merchant.Ok {
+		return err
+	}
 	return nil
 }
