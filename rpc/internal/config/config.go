@@ -11,4 +11,14 @@ type Config struct {
 	Mysql struct {
 		DataSource string
 	}
+	AES struct {
+		Key string
+	}
+	SFTP struct {
+		Host       string
+		Port       int
+		User       string
+		Password   string
+		ServerPath string
+	}
 }

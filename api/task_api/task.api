@@ -1,0 +1,71 @@
+type (
+	TaskList {
+		TaskId      int32  `json:"task_id"` // 任务ID
+		TaskName    string `json:"task_name"` // 任务名称
+		TaskTypeId  int32  `json:"task_type_id"` // 任务类型ID
+		Status      int32  `json:"status"` // 任务状态
+		Description string `json:"description"` // 任务描述
+		Score       int32  `json:"score"` // 任务分数
+	}
+	TaskTypeList {
+		TaskTypeId   int32  `json:"task_type_id"` // 任务类型ID
+		TaskTypeName string `json:"task_type_name"` // 任务类型名称
+	}
+)
+
+//任务列表
+type (
+	TaskListReq {
+		Status     *int32  `json:"status,optional"` // 任务状态
+		TaskTypeId *int32  `json:"task_type_id,optional"` // 任务类型
+		TaskName   *string `json:"task_name,optional"` // 任务名称
+		TaskId     *int32  `json:"task_id,optional"` // 任务ID
+		Page       int32   `json:"page"` // 页码
+		Limit      int32   `json:"limit"` // 条数
+	}
+	TaskListResp {
+		Count  int32       `json:"count"` // 数据总条数
+		Limit  int32       `json:"limit"` // 条数
+		Number int32       `json:"number"` // 总页数
+		Page   int32       `json:"page"` // 当前页码
+		List   []*TaskList `json:"list"` // 任务数据列表
+	}
+)
+
+//任务类型列表
+type (
+	TaskTypeListReq  {}
+	TaskTypeListResp {
+		//总条数
+		Count int32           `json:"count"`
+		List  []*TaskTypeList `json:"list"`
+	}
+)
+
+//更新任务信息
+type (
+	UpDateTaskReq {
+		TaskId int32 `json:"task_id"`
+		Score  int32 `json:"score"`
+	}
+	UpDateTaskResp  {}
+)
+
+@server (
+	prefix: /api/task
+	jwt:    Auth
+)
+service task-api {
+	//获取任务列表
+	@handler TaskList
+	post /taskList (TaskListReq) returns (TaskListResp)
+
+	//获取活动类型列表
+	@handler TaskType
+	post /taskType (TaskTypeListReq) returns (TaskTypeListResp)
+
+	//更新活动类型列表
+	@handler TaskUpdate
+	post /TaskUpdate (UpDateTaskReq) returns (UpDateTaskResp)
+}
+

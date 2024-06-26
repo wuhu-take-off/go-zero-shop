@@ -11,7 +11,7 @@ message UserLoginReq{
   string email_auth = 2;
 }
 message UserLoginResp{
-  bool OK = 1;
+  int32 user_id = 1;
 }
 
 service UserServe{
@@ -122,6 +122,7 @@ message GoodsUpdateResp{
 message GoodsDelReq{
   int32 goods_id = 1;
 }
+
 message GoodsDelResp{
   bool OK = 1;
 }
@@ -166,19 +167,23 @@ message SendEmailAuthResp{
 message UploadImgReq{
   //图片二进制
   bytes img = 1;
+  string img_name =2;
   //图片对应的商品ID
-  int32 goods_id = 2;
+  int32 goods_id = 3;
 }
 message UploadImgResp{
   //图片URl
   string url = 1;
 }
 
+message Img{
+  bytes img = 1;
+}
 message LoadImgReq{
-  string url = 1;
+  int32 GoodsId = 1;
 }
 message LoadImgResp{
-  bytes img = 1;
+  repeated Img imgs = 1;
 }
 
 service FunctionServe{
@@ -411,14 +416,17 @@ message AddMerchantReq{
   string phone = 6;
 }
 message AddMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 
+//更新商铺请求
 message UpdateMerchantReq{
   //用户Id
   int32 user_id = 1;
+  //商铺ID
+  int32 merchant_id = 2;
   //商铺名称
-  optional string merchant_name = 2;
+  optional string merchant_name = 3;
   //商铺状态
   optional int32 merchant_status = 4;
   //联系人
@@ -427,7 +435,7 @@ message UpdateMerchantReq{
   optional string phone = 6;
 }
 message UpdateMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 message DelMerchantReq{
   //用户ID
@@ -435,11 +443,12 @@ message DelMerchantReq{
   int32 merchant_id = 2;
 }
 message DelMerchantResp{
-  int32 ok = 1;
+  bool ok = 1;
 }
 service MerchantServe{
   rpc MerchantList (MerchantListReq) returns (MerchantListResp);
   rpc UpdateMerchant (UpdateMerchantReq) returns (UpdateMerchantResp);
   rpc DelMerchant (DelMerchantReq) returns (DelMerchantResp);
+  rpc AddMerchant (AddMerchantReq)returns (AddMerchantResp);
 }
 // goctl rpc protoc shop.proto --go_out=. --go-grpc_out=. --zrpc_out=. -m

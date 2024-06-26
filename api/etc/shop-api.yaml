@@ -1,0 +1,11 @@
+Name: function-api
+Host: 0.0.0.0
+Port: 8888
+Auth:
+  AccessSecret: awejlajwgkawefkdkgca
+  AccessExpire: 3600
+ShopRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    key: shop.rpc

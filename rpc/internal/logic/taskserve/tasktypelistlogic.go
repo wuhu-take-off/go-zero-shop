@@ -1,6 +1,7 @@
 package taskservelogic
 
 import (
+	"TongChi_shop/model/task_type_model"
 	"context"
 
 	"TongChi_shop/rpc/internal/svc"
@@ -25,7 +26,14 @@ func NewTaskTypeListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Task
 
 // 获取任务类型列表
 func (l *TaskTypeListLogic) TaskTypeList(in *shop.TaskTypeListReq) (*shop.TaskTypeListResp, error) {
-	// todo: add your logic here and delete this line
 
-	return &shop.TaskTypeListResp{}, nil
+	goodsTypes := task_type_model.NewTaskTypeModel(l.svcCtx.DB).FindTaskTypes()
+	var list []*shop.TaskTypeList
+	for i := 0; i < len(goodsTypes); i++ {
+		list = append(list, goodsTypes[i].ToTaskTypesResp())
+	}
+	return &shop.TaskTypeListResp{
+		TaskTypeList: list,
+		Count:        int32(len(goodsTypes)),
+	}, nil
 }

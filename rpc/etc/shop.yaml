@@ -9,3 +9,11 @@ CacheRedis:
   Password: 112154ZhouM..
 Mysql:
   DataSource: mysql:112154ZhouM..@tcp(8.130.145.246)/TongChi_shop?charset=utf8mb4&parseTime=True&loc=Local
+AES:
+  Key: sdjajgkejaiodfackjakjgeiadeklesb
+SFTP:
+  Host: "8.130.145.246"
+  Port: 22
+  User: root
+  Password: 112154ZhouM..
+  ServerPath: /home/TongChi_shop/

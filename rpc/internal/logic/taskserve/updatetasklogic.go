@@ -1,7 +1,10 @@
 package taskservelogic
 
 import (
+	"TongChi_shop/model/task_model"
+	"TongChi_shop/model/user_model"
 	"context"
+	"errors"
 
 	"TongChi_shop/rpc/internal/svc"
 	"TongChi_shop/rpc/shop"
@@ -25,7 +28,14 @@ func NewUpdateTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 
 // 更新任务信息
 func (l *UpdateTaskLogic) UpdateTask(in *shop.UpdateTaskReq) (*shop.UpdateTaskResp, error) {
-	// todo: add your logic here and delete this line
 
-	return &shop.UpdateTaskResp{}, nil
+	if !user_model.NewUserInfosModel(l.svcCtx.DB).CheckUsersTask(in.UserId, in.TaskId) {
+		return nil, errors.New("非法访问")
+	}
+	if err := task_model.NewTaskInfosModel(l.svcCtx.DB).UpdateTaskScore(in.TaskId, in.Score); err != nil {
+		return nil, errors.New("修改失败")
+	}
+	return &shop.UpdateTaskResp{
+		Ok: true,
+	}, nil
 }
